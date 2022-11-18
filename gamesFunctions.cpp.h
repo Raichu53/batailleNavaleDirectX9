@@ -1,0 +1,8 @@
+//
+// Created by matt0 on 11/16/2022.
+//
+
+#ifndef PROJET_GAMESFUNCTIONS_CPP_H
+#define PROJET_GAMESFUNCTIONS_CPP_H
+
+#endif //PROJET_GAMESFUNCTIONS_CPP_H

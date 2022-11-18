@@ -1,0 +1,18 @@
+# ninja log v5
+1	147	6904630730463751	build.ninja	b1071f010d0fffec
+5	563	6904626559941356	CMakeFiles/projet.dir/gamesFunctions.c.obj	e9a6ae8ef375b5db
+3	703	6904616131897580	CMakeFiles/projet.dir/main.cpp.obj	dd378ee3689c5855
+1	490	6904629861342893	CMakeFiles/projet.dir/main.c.obj	57292e6b01a37aca
+7	703	6904626561351356	CMakeFiles/projet.dir/windowProc.cpp.obj	f833cc972fa85d8e
+2	72	6904617760111734	projet.exe	a7a277bdc69a00ea
+0	701	6904616131876346	CMakeFiles/projet.dir/gamesFunctions.cpp.obj	133a0d4ed4e5fd51
+2	484	6904630833435167	CMakeFiles/projet.dir/windowProc.c.obj	1533f54afe4bd349
+484	547	6904630834045167	projet.exe	af2f13429d4a6157
+1	553	6904631887928682	CMakeFiles/projet.dir/main.c.obj	57292e6b01a37aca
+553	621	6904631888578682	projet.exe	af2f13429d4a6157
+1	486	6904632125473790	CMakeFiles/projet.dir/main.c.obj	57292e6b01a37aca
+486	550	6904632126096264	projet.exe	af2f13429d4a6157
+2	628	6904633932010570	CMakeFiles/projet.dir/main.c.obj	57292e6b01a37aca
+2	69	6904634153929433	projet.exe	af2f13429d4a6157
+2	509	6904634593278950	CMakeFiles/projet.dir/main.c.obj	57292e6b01a37aca
+509	583	6904634593980507	projet.exe	af2f13429d4a6157
