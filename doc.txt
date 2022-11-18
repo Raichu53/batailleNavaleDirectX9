@@ -1,4 +1,0 @@
-CmakeList.txt:
-    https://learn.microsoft.com/en-us/cpp/build/reference/entry-entry-point-symbol?view=msvc-170
-    https://stackoverflow.com/questions/31037882/whats-the-cmake-syntax-to-set-and-use-variables
-    https://cmake.org/cmake/help/latest/guide/tutorial/index.html
