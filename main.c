@@ -1,7 +1,10 @@
 #include "includes.h"
 
+HWND window = NULL;
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
-    //pour le debug decommenter les 3 lignes commenté au debut et les 2 a la fin de ce fichier
+    //pour le debug decommenter ces 3 lignes et les 2 a la fin du main
     /*
     AllocConsole();
     FILE* f;
@@ -21,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //on "enregistre" la classe
     RegisterClassEx(&wcx);
     //on crée la fenetre
-    HWND window = CreateWindowEx(NULL, wcx.lpszClassName, "bataile navale", WS_OVERLAPPEDWINDOW,
+    window = CreateWindowEx(0, wcx.lpszClassName, "bataile navale", WS_OVERLAPPEDWINDOW,
                              100, 100, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, NULL, wcx.hInstance, NULL);
 
     // montrer la fenetre
@@ -29,6 +32,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //gestion des interactions avec la fenetre (fonction WindowProc)
     MSG msg;
 
+    initD3D();
     while (1)
     {
         //https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea
@@ -38,11 +42,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             DispatchMessageW(&msg);
         }
 
+        render_frame();
+
         if (msg.message == WM_QUIT || GetAsyncKeyState(VK_ESCAPE))//la croix ou echap
             break;
 
         Sleep(1);
     }
+    cleanD3D();
     /*
     fclose(f);
     FreeConsole();

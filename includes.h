@@ -1,7 +1,7 @@
 //
 // Created by matt0 on 11/16/2022.
 //
-
+#pragma once
 #ifndef PROJET_INCLUDES_H
 #define PROJET_INCLUDES_H
 
@@ -11,13 +11,12 @@
 
 #include <windows.h>
 
-#include "gamesFunctions.cpp.h"
+#include "gamesFunctions.h"
+#include "dx.h"
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
 //variable(s) accesible dans tout les fichiers
-extern HWND window;
+extern HWND window; // the pointer to the window handle
+
 #endif //PROJET_INCLUDES_H
