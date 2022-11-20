@@ -11,4 +11,4 @@ https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessa
 <h3>Directx 9 : </h3>
 Download Microsoft DirectX SDK June 2010 - DXSDK_Jun10.exe
 <p><b>Apprendre directx pas a pas </b>: http://www.directxtutorial.com/LessonList.aspx?listid=9</p>
-<p><b>IMPORTANT : utiliser directx methods in C</b></p>https://learn.microsoft.com/en-us/windows/win32/directshow/controlling-filter-graphs-using-c
+<p><b>IMPORTANT : utiliser les methodes directx en C</b></p>https://learn.microsoft.com/en-us/windows/win32/directshow/controlling-filter-graphs-using-c
