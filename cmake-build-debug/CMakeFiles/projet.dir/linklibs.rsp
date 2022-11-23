@@ -1,1 +1,0 @@
- ../MicrosoftDirectXSDKJune2010/Lib/x64/d3d9.lib ../MicrosoftDirectXSDKJune2010/Lib/x64/d3dx9.lib -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 
