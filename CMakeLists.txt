@@ -1,3 +1,7 @@
+#si lors du build cette erreur :
+#The system cannot find the file specified
+#CMake Error: Generator: execution of make failed. Make command was: D:/CLion 2022.2.4/bin/mingw/bin/mingw32-make.exe -f Makefile -j 12 projet &&
+#faire : vider le fichier cmake-build-debug (si il est pas deja vide ) -> clic droit dessus -> "reload cmake project"
 cmake_minimum_required(VERSION 3.23)
 project(projet)
 
