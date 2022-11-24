@@ -10,5 +10,4 @@ void initD3D();
 void render_frame();
 void cleanD3D();
 
-
 #endif //PROJET_DX_H

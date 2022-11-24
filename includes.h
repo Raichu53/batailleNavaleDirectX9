@@ -17,6 +17,6 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 //variable(s) accesible dans tout les fichiers
-extern HWND window; // the pointer to the window handle
+extern HWND window; // ptr du handle de la window
 
 #endif //PROJET_INCLUDES_H
