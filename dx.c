@@ -7,7 +7,6 @@
 IDirect3D9* d3d = NULL;
 IDirect3DDevice9* d3ddev = NULL;
 
-
 #pragma region functions/structs defs
 void drawScene();
 void drawGrid();
@@ -240,16 +239,27 @@ void drawGrid() {
     for(int i = 0; i < GAME_DIMENSION;i++){
         for(int k = 0; k < GAME_DIMENSION;k++){
             //la bare en haut et le coté droit
-
+            drawLine((D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x,Game->botPlayground[i][k]->posInGrid.y},
+                     (D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->botPlayground[i][k]->posInGrid.y},
+                     1, D3DCOLOR_XRGB(0,0,0));
+            drawLine((D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->botPlayground[i][k]->posInGrid.y  },
+                     (D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->botPlayground[i][k]->posInGrid.y + ((WINDOW_WIDTH/2)/15) },
+                     1, D3DCOLOR_XRGB(0,0,0));
         }
     }
     //player
     for(int j = 0; j < GAME_DIMENSION;j++){
         for(int l = 0; l < GAME_DIMENSION;l++){
             //la bare en haut et le coté droit
-
+            drawLine((D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x,Game->playerPlayground[j][l]->posInGrid.y},
+                     (D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->playerPlayground[j][l]->posInGrid.y},
+                     1, D3DCOLOR_XRGB(0,0,0));
+            drawLine((D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->playerPlayground[j][l]->posInGrid.y  },
+                     (D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->playerPlayground[j][l]->posInGrid.y + ((WINDOW_WIDTH/2)/15) },
+                     1, D3DCOLOR_XRGB(0,0,0));
         }
     }
+    drawLine((D3DXVECTOR2){WINDOW_WIDTH/2,0},(D3DXVECTOR2){WINDOW_WIDTH/2,WINDOW_HEIGHT},1,D3DCOLOR_XRGB(255,0,0));
 }
 void drawLine(D3DXVECTOR2 pos1,D3DXVECTOR2 pos2,int thickness,D3DCOLOR color)
 {

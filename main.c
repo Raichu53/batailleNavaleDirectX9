@@ -24,8 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     RegisterClassEx(&wcx);
     //on crée la fenetre
     HWND window = CreateWindowEx(0, wcx.lpszClassName, "bataile navale", WS_OVERLAPPEDWINDOW,
-                             100, 100, WINDOW_WIDTH+7, WINDOW_HEIGHT+20, NULL, NULL, wcx.hInstance, NULL);
-                                                    //offset bizzarre car les case sont a 26.6px et ça arrondit a 27
+                             100, 100, WINDOW_WIDTH+20, WINDOW_HEIGHT+40, NULL, NULL, wcx.hInstance, NULL);
+                                                    //pour counter l'app bar
     // montrer la fenetre
     ShowWindow(window, nShowCmd);
     //gestion des interactions avec la fenetre (fonction WindowProc)
