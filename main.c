@@ -1,15 +1,14 @@
 #include "includes.h"
 
-HWND window = NULL;
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+Game_t* Game = NULL;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
     //pour le debug decommenter ces 3 lignes et les 2 a la fin du main
-    /*
+
     AllocConsole();
     FILE* f;
     freopen_s(&f, "CONOUT$", "w", stdout);
-    */
+
 
     WNDCLASSEX wcx = {};
     ZeroMemory(&wcx,sizeof(WNDCLASSEX));
@@ -24,15 +23,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //on "enregistre" la classe
     RegisterClassEx(&wcx);
     //on crée la fenetre
-    window = CreateWindowEx(0, wcx.lpszClassName, "bataile navale", WS_OVERLAPPEDWINDOW,
-                             100, 100, WINDOW_WIDTH, WINDOW_HEIGHT, NULL, NULL, wcx.hInstance, NULL);
-
+    HWND window = CreateWindowEx(0, wcx.lpszClassName, "bataile navale", WS_OVERLAPPEDWINDOW,
+                             100, 100, WINDOW_WIDTH+7, WINDOW_HEIGHT+20, NULL, NULL, wcx.hInstance, NULL);
+                                                    //offset bizzarre car les case sont a 26.6px et ça arrondit a 27
     // montrer la fenetre
     ShowWindow(window, nShowCmd);
     //gestion des interactions avec la fenetre (fonction WindowProc)
     MSG msg;
 
-    initD3D();
+    initD3D(window);
+    Game = game_new(window);
+
     while (1)
     {
         //https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea
@@ -50,9 +51,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         Sleep(1);
     }
     cleanD3D();
-    /*
+
     fclose(f);
     FreeConsole();
-     */
+
     return 0;
 }

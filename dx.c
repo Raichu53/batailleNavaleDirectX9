@@ -7,11 +7,12 @@
 IDirect3D9* d3d = NULL;
 IDirect3DDevice9* d3ddev = NULL;
 
+
 #pragma region functions/structs defs
 void drawScene();
 void drawGrid();
 void drawLine(D3DXVECTOR2 pos1,D3DXVECTOR2 pos2,int thickness,D3DCOLOR color);
-
+D3DXVECTOR2 getWindowDimension();
 #pragma endregion
 
 #pragma region GameSprite
@@ -19,6 +20,7 @@ void drawLine(D3DXVECTOR2 pos1,D3DXVECTOR2 pos2,int thickness,D3DCOLOR color);
 typedef struct GameSprite
 {
     //ptr vers les fonctions, assignation dans la fonction qui sert de "constructeur" (GameSprite_new)
+    //on ajoute des parenthese sinon ça revient a dire fonction qui renvoie un ptr de type void
     void (*GameSprite_delete)(struct GameSprite* pGS);
 
     int (*init)(struct GameSprite* pGS,const char* fileName, int w, int h);
@@ -28,7 +30,7 @@ typedef struct GameSprite
 
     //getters and setters
     D3DXVECTOR2 (*getPos)(struct GameSprite* pGS);
-    void (*setPos)(struct GameSprite* pGS,int x, int y);
+    void (*setPos)(struct GameSprite* pGS,float x, float y);
 
     int initialized;
     LPDIRECT3DTEXTURE9 tex;
@@ -120,7 +122,7 @@ D3DXVECTOR2 getPos(struct GameSprite* pGS)
 {
     return (D3DXVECTOR2){ pGS->pos.x,pGS->pos.y };
 }
-void setPos(struct GameSprite* pGS,int x, int y)
+void setPos(struct GameSprite* pGS,float x, float y)
 {
     pGS->pos.x = x;
     pGS->pos.y = y;
@@ -161,7 +163,7 @@ GameSprite_t* GameSprite_new()
     pGS->GameSprite_delete = &GameSprite_delete;
     return pGS;
 }
-GameSprite_t* GameSprite_newWithPos(int x, int y)
+GameSprite_t* GameSprite_newWithPos(float x, float y)
 {
     GameSprite_t* pGS = malloc(sizeof(GameSprite_t));
     pGS->pos.x = x;
@@ -186,7 +188,7 @@ GameSprite_t* GameSprite_newWithPos(int x, int y)
 
 #pragma endregion
 
-void initD3D()
+void initD3D(HWND window)
 {
     d3d = Direct3DCreate9(D3D_SDK_VERSION);    // crée l'interface direct3D
     D3DPRESENT_PARAMETERS d3dpp;    // crée les param pour la creation du device
@@ -209,7 +211,7 @@ void initD3D()
 void render_frame()
 {
     // Clear rose
-    d3ddev->lpVtbl->Clear(d3ddev,0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 80, 127), 1.0f, 0);
+    d3ddev->lpVtbl->Clear(d3ddev,0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 
     d3ddev->lpVtbl->BeginScene(d3ddev);    // demarre la scene 3D
 
@@ -230,10 +232,24 @@ void drawScene()
 {
     drawGrid();
 
-}
-void drawGrid()
-{
 
+}
+void drawGrid() {
+
+    //bot
+    for(int i = 0; i < GAME_DIMENSION;i++){
+        for(int k = 0; k < GAME_DIMENSION;k++){
+            //la bare en haut et le coté droit
+
+        }
+    }
+    //player
+    for(int j = 0; j < GAME_DIMENSION;j++){
+        for(int l = 0; l < GAME_DIMENSION;l++){
+            //la bare en haut et le coté droit
+
+        }
+    }
 }
 void drawLine(D3DXVECTOR2 pos1,D3DXVECTOR2 pos2,int thickness,D3DCOLOR color)
 {
@@ -247,4 +263,15 @@ void drawLine(D3DXVECTOR2 pos1,D3DXVECTOR2 pos2,int thickness,D3DCOLOR color)
     LineL->lpVtbl->SetWidth(LineL,thickness);
     LineL->lpVtbl->Draw(LineL,Line, 2, color);
     LineL->lpVtbl->Release(LineL);
+}
+D3DXVECTOR2 getWindowDimension()
+{
+    RECT rect;
+    int width,height;
+    if(GetWindowRect(Game->window, &rect))
+    {
+         width = rect.right - rect.left;
+         height = rect.bottom - rect.top;
+    }
+    return (D3DXVECTOR2){width,height};
 }

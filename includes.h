@@ -14,9 +14,10 @@
 #include "gamesFunctions.h"
 #include "dx.h"
 
-#define WINDOW_WIDTH 800
+#define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 600
-//variable(s) accesible dans tout les fichiers
-extern HWND window; // ptr du handle de la window
 
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+extern Game_t* Game;
 #endif //PROJET_INCLUDES_H

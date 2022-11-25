@@ -6,7 +6,7 @@
 #define PROJET_DX_H
 
 
-void initD3D();
+void initD3D(HWND window);
 void render_frame();
 void cleanD3D();
 
