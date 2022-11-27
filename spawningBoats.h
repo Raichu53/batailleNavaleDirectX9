@@ -1,0 +1,8 @@
+//
+// Created by matt0 on 11/27/2022.
+//
+
+#ifndef PROJET_SPAWNINGBOATS_H
+#define PROJET_SPAWNINGBOATS_H
+
+#endif //PROJET_SPAWNINGBOATS_H

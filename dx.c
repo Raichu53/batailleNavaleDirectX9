@@ -2,10 +2,7 @@
 // Created by matt0 on 11/19/2022.
 //
 #include "includes.h"
-#include "./MicrosoftDirectXSDKJune2010/Include/d3d9.h"
-#include "./MicrosoftDirectXSDKJune2010/Include/d3dx9.h"
-IDirect3D9* d3d = NULL;
-IDirect3DDevice9* d3ddev = NULL;
+
 
 #pragma region functions/structs defs
 void drawScene();
@@ -15,29 +12,6 @@ D3DXVECTOR2 getWindowDimension();
 #pragma endregion
 
 #pragma region GameSprite
-//il faut placer les images dans le meme dossier que l'exe
-typedef struct GameSprite
-{
-    //ptr vers les fonctions, assignation dans la fonction qui sert de "constructeur" (GameSprite_new)
-    //on ajoute des parenthese sinon ça revient a dire fonction qui renvoie un ptr de type void
-    void (*GameSprite_delete)(struct GameSprite* pGS);
-
-    int (*init)(struct GameSprite* pGS,const char* fileName, int w, int h);
-    int (*isInit)(struct GameSprite* pGS);
-    void (*update)(struct GameSprite* pGS);
-    void (*draw)(struct GameSprite* pGS);
-
-    //getters and setters
-    D3DXVECTOR2 (*getPos)(struct GameSprite* pGS);
-    void (*setPos)(struct GameSprite* pGS,float x, float y);
-
-    int initialized;
-    LPDIRECT3DTEXTURE9 tex;
-    LPD3DXSPRITE sprite;
-
-    D3DXVECTOR3 pos;
-    D3DCOLOR color;
-}GameSprite_t;
 int init(GameSprite_t* pGS,const char* fileName, int w, int h)
 {
     if (d3ddev == NULL)
@@ -205,7 +179,8 @@ void initD3D(HWND window)
                       D3DCREATE_SOFTWARE_VERTEXPROCESSING,
                       &d3dpp,
                       &d3ddev);
-
+    //init main struct
+    Game = game_new(window);
 }
 void render_frame()
 {

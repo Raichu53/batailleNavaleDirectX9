@@ -9,5 +9,6 @@
 void initD3D(HWND window);
 void render_frame();
 void cleanD3D();
-
+GameSprite_t* GameSprite_new();
+GameSprite_t* GameSprite_newWithPos(float x, float y);
 #endif //PROJET_DX_H

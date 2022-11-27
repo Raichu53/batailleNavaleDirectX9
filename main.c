@@ -1,6 +1,9 @@
 #include "includes.h"
 
+IDirect3D9* d3d = NULL;
+IDirect3DDevice9* d3ddev = NULL;
 Game_t* Game = NULL;
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
     //pour le debug decommenter ces 3 lignes et les 2 a la fin du main
@@ -32,7 +35,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     MSG msg;
 
     initD3D(window);
-    Game = game_new(window);
 
     while (1)
     {
