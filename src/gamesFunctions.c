@@ -94,7 +94,7 @@ porte_avion_t* porteAvion_new(){
     pPorteAvion->pPorteAvionTex = NULL;
     pPorteAvion->pPorteAvionTex = GameSprite_new();
     if(pPorteAvion->pPorteAvionTex != NULL){
-        pPorteAvion->pPorteAvionTex->init(pPorteAvion->pPorteAvionTex,"porteAvion.png",(40*7)-10,35);//param w multiplié par la longeur du bateau
+        pPorteAvion->pPorteAvionTex->init(pPorteAvion->pPorteAvionTex,"../img/porteAvion.png",(40*7)-10,35);//param w multiplié par la longeur du bateau
         if(!pPorteAvion->pPorteAvionTex->isInit(pPorteAvion->pPorteAvionTex)){
             MessageBoxA(NULL,"creatiobn de la tex du porte avion failed",NULL,0);
             exit(1);
@@ -106,7 +106,7 @@ porte_avion_t* porteAvion_new(){
     pPorteAvion->pPorteAvionTex90right = NULL;
     pPorteAvion->pPorteAvionTex90right = GameSprite_new();
     if(pPorteAvion->pPorteAvionTex90right != NULL){
-        pPorteAvion->pPorteAvionTex90right->init(pPorteAvion->pPorteAvionTex90right,"porteAvion90right.png",35,(40*7)-10);//param w multiplié par la longeur du bateau
+        pPorteAvion->pPorteAvionTex90right->init(pPorteAvion->pPorteAvionTex90right,"../img/porteAvion90right.png",35,(40*7)-10);//param w multiplié par la longeur du bateau
         if(!pPorteAvion->pPorteAvionTex90right->isInit(pPorteAvion->pPorteAvionTex90right)){
             MessageBoxA(NULL,"creatiobn de la tex du porte avion 90 right failed",NULL,0);
             exit(1);
@@ -126,7 +126,7 @@ croiseur_t* croiseur_new(){
     pCroiseur->pCroiseurTex = NULL;
     pCroiseur->pCroiseurTex = GameSprite_new();
     if(pCroiseur->pCroiseurTex != NULL){
-        pCroiseur->pCroiseurTex->init(pCroiseur->pCroiseurTex,"croiseur.png",(40*5)-10,35);
+        pCroiseur->pCroiseurTex->init(pCroiseur->pCroiseurTex,"../img/croiseur.png",(40*5)-10,35);
         if(!pCroiseur->pCroiseurTex->isInit(pCroiseur->pCroiseurTex)){
             MessageBoxA(NULL,"creatiobn de la tex du croiseur failed",NULL,0);
             exit(1);
@@ -147,7 +147,7 @@ destroyer_t* destroyer_new(){
 
     pDestroyer->pDestroyerTex = GameSprite_new();
     if(pDestroyer->pDestroyerTex != NULL){
-        pDestroyer->pDestroyerTex->init(pDestroyer->pDestroyerTex,"destroyer.png",(40*3)-10,35);
+        pDestroyer->pDestroyerTex->init(pDestroyer->pDestroyerTex,"../img/destroyer.png",(40*3)-10,35);
         if(!pDestroyer->pDestroyerTex->isInit(pDestroyer->pDestroyerTex)){
             MessageBoxA(NULL,"creatiobn de la tex du destroyer failed",NULL,0);
             exit(1);
@@ -168,7 +168,7 @@ sous_marin_t* sousMarin_new(){
 
     pSousMarin->pSousMarinTex = GameSprite_new();
     if(pSousMarin->pSousMarinTex != NULL){
-        pSousMarin->pSousMarinTex->init(pSousMarin->pSousMarinTex,"sousMarin.png",40*1,35);
+        pSousMarin->pSousMarinTex->init(pSousMarin->pSousMarinTex,"../img/sousMarin.png",40*1,35);
         if(!pSousMarin->pSousMarinTex->isInit(pSousMarin->pSousMarinTex)){
             MessageBoxA(NULL,"creatiobn de la tex du sous marin failed",NULL,0);
             exit(1);
