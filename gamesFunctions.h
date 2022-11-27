@@ -11,40 +11,7 @@
 typedef struct vec2{
     int x,y;
 }vec2_t;
-typedef struct sous_marin{
-    int len;
-    int currentHealth; //array en partant de l'avant vers l'arriere du bateau pour savoir ou il y a des hits
-}sous_marin_t;
-typedef struct destroyer{
-    int len;
-    int currentHealth[3];
-}destroyer_t;
-typedef struct croiseur{
-    int len;
-    int currentHealth[5];
-}croiseur_t;
-typedef struct porte_avion{
-    int len;
-    int currentHealth[7];
-}porte_avion_t;
-typedef struct bots_boats{
-    porte_avion_t* pPorteAvion;
-    croiseur_t* pCroiseurs[2];
-    destroyer_t* pDestroyers[3];
-    sous_marin_t* pSousMarins[4];
-}bots_boats_t;
-typedef struct player_boats{
-    porte_avion_t* pPorteAvion;
-    croiseur_t* pCroiseurs[2];
-    destroyer_t* pDestroyers[3];
-    sous_marin_t* pSousMarins[4];
-}player_boats_t;
-typedef struct Case{
-    int id;
-    vec2_t posInGrid;
 
-
-}Case_t;
 typedef struct GameSprite
 {
     //ptr vers les fonctions, assignation dans la fonction qui sert de "constructeur" (GameSprite_new)
@@ -67,6 +34,62 @@ typedef struct GameSprite
     D3DXVECTOR3 pos;
     D3DCOLOR color;
 }GameSprite_t;
+typedef struct Case{
+    int id;
+    vec2_t posInGrid;
+    int isOccupied;
+
+}Case_t;
+typedef struct sous_marin{
+    int len;
+    int currentHealth; //array en partant de l'avant vers l'arriere du bateau pour savoir ou il y a des hits
+    //il faut placer les images dans le meme dossier que l'exe
+    GameSprite_t* pSousMarinTex;
+    int caseId;
+    int isVertical;
+    Case_t* pC;
+}sous_marin_t;
+typedef struct destroyer{
+    int len;
+    int currentHealth[3];
+
+    GameSprite_t* pDestroyerTex;
+    int caseId;
+    int isVertical;
+    Case_t* pC;
+}destroyer_t;
+typedef struct croiseur{
+    int len;
+    int currentHealth[5];
+
+    GameSprite_t* pCroiseurTex;
+    int caseId;
+    int isVertical;
+    Case_t* pC;
+}croiseur_t;
+typedef struct porte_avion{
+    int len;
+    int currentHealth[7];
+
+    GameSprite_t* pPorteAvionTex;
+    GameSprite_t* pPorteAvionTex90right;
+    int caseId;
+    int isVertical;
+    Case_t* pC;
+}porte_avion_t;
+typedef struct bots_boats{
+    porte_avion_t* pPorteAvion;
+    croiseur_t* pCroiseurs[2];
+    destroyer_t* pDestroyers[3];
+    sous_marin_t* pSousMarins[4];
+}bots_boats_t;
+typedef struct player_boats{
+    porte_avion_t* pPorteAvion;
+    croiseur_t* pCroiseurs[2];
+    destroyer_t* pDestroyers[3];
+    sous_marin_t* pSousMarins[4];
+}player_boats_t;
+
 typedef struct Game{
     HWND window;
     //le 1er index est la hauteur le 2eme est la largeur
@@ -75,11 +98,9 @@ typedef struct Game{
 
     bots_boats_t* pBots_boats;
     player_boats_t* pPlayer_boats;
-    //il faut placer les images dans le meme dossier que l'exe
-    GameSprite_t* pPorteAvionTex;
-    GameSprite_t* pCroiseurTex;
-    GameSprite_t* pDestroyerTex;
-    GameSprite_t* pSousMarinTex;
+
+
+
 }Game_t;
 
 Case_t* case_new(int rowLen,int collumnlen,int bBot);

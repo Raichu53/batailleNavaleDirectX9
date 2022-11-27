@@ -34,59 +34,6 @@ Game_t* game_new(HWND window)
             exit(1);
         }
 
-        //sprites and tex
-        pGame->pPorteAvionTex = NULL;
-        pGame->pCroiseurTex = NULL;
-        pGame->pDestroyerTex = NULL;
-        pGame->pSousMarinTex = NULL;
-
-        pGame->pPorteAvionTex = GameSprite_new();
-        if(pGame->pPorteAvionTex != NULL){
-            pGame->pPorteAvionTex->init(pGame->pPorteAvionTex,"porteAvion.png",40*7,40);//param w multiplié par la longeur du bateau
-            if(!pGame->pPorteAvionTex->isInit(pGame->pPorteAvionTex)){
-                MessageBoxA(NULL,"creatiobn de la tex du porte avion failed",NULL,0);
-                exit(1);
-            }
-        }else{
-            MessageBoxA(NULL,"creation du ptr GameSprite pour le porte avion failed",NULL,0);
-            exit(1);
-        }
-
-        pGame->pCroiseurTex = GameSprite_new();
-        if(pGame->pCroiseurTex != NULL){
-            pGame->pCroiseurTex->init(pGame->pCroiseurTex,"croiseur.png",40*5,40);
-            if(!pGame->pCroiseurTex->isInit(pGame->pCroiseurTex)){
-                MessageBoxA(NULL,"creatiobn de la tex du croiseur failed",NULL,0);
-                exit(1);
-            }
-        }else{
-            MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur failed",NULL,0);
-            exit(1);
-        }
-
-        pGame->pDestroyerTex = GameSprite_new();
-        if(pGame->pDestroyerTex != NULL){
-            pGame->pDestroyerTex->init(pGame->pDestroyerTex,"destroyer.png",40*3,40);
-            if(!pGame->pDestroyerTex->isInit(pGame->pDestroyerTex)){
-                MessageBoxA(NULL,"creatiobn de la tex du destroyer failed",NULL,0);
-                exit(1);
-            }
-        }else{
-            MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer failed",NULL,0);
-            exit(1);
-        }
-
-        pGame->pSousMarinTex = GameSprite_new();
-        if(pGame->pSousMarinTex != NULL){
-            pGame->pSousMarinTex->init(pGame->pSousMarinTex,"sousMarin.png",40*1,40);
-            if(!pGame->pSousMarinTex->isInit(pGame->pSousMarinTex)){
-                MessageBoxA(NULL,"creatiobn de la tex du sous marin failed",NULL,0);
-                exit(1);
-            }
-        }else{
-            MessageBoxA(NULL,"creation du ptr GameSprite pour le sous marin failed",NULL,0);
-            exit(1);
-        }
 
         return pGame;
     }else{
@@ -144,6 +91,30 @@ player_boats_t* player_boats_new(){
 }
 porte_avion_t* porteAvion_new(){
     porte_avion_t* pPorteAvion = (porte_avion_t*)(malloc(sizeof(porte_avion_t)));
+    pPorteAvion->pPorteAvionTex = NULL;
+    pPorteAvion->pPorteAvionTex = GameSprite_new();
+    if(pPorteAvion->pPorteAvionTex != NULL){
+        pPorteAvion->pPorteAvionTex->init(pPorteAvion->pPorteAvionTex,"porteAvion.png",(40*7)-10,35);//param w multiplié par la longeur du bateau
+        if(!pPorteAvion->pPorteAvionTex->isInit(pPorteAvion->pPorteAvionTex)){
+            MessageBoxA(NULL,"creatiobn de la tex du porte avion failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le porte avion failed",NULL,0);
+        exit(1);
+    }
+    pPorteAvion->pPorteAvionTex90right = NULL;
+    pPorteAvion->pPorteAvionTex90right = GameSprite_new();
+    if(pPorteAvion->pPorteAvionTex90right != NULL){
+        pPorteAvion->pPorteAvionTex90right->init(pPorteAvion->pPorteAvionTex90right,"porteAvion90right.png",35,(40*7)-10);//param w multiplié par la longeur du bateau
+        if(!pPorteAvion->pPorteAvionTex90right->isInit(pPorteAvion->pPorteAvionTex90right)){
+            MessageBoxA(NULL,"creatiobn de la tex du porte avion 90 right failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le porte avion failed",NULL,0);
+        exit(1);
+    }
     pPorteAvion->len = 7;
     for(int i = 0; i < pPorteAvion->len;i++){
         pPorteAvion->currentHealth[i] = 1;
@@ -152,6 +123,18 @@ porte_avion_t* porteAvion_new(){
 }
 croiseur_t* croiseur_new(){
     croiseur_t* pCroiseur = (croiseur_t*)(malloc(sizeof(croiseur_t)));
+    pCroiseur->pCroiseurTex = NULL;
+    pCroiseur->pCroiseurTex = GameSprite_new();
+    if(pCroiseur->pCroiseurTex != NULL){
+        pCroiseur->pCroiseurTex->init(pCroiseur->pCroiseurTex,"croiseur.png",(40*5)-10,35);
+        if(!pCroiseur->pCroiseurTex->isInit(pCroiseur->pCroiseurTex)){
+            MessageBoxA(NULL,"creatiobn de la tex du croiseur failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur failed",NULL,0);
+        exit(1);
+    }
     pCroiseur->len = 5;
     for(int i = 0; i < pCroiseur->len;i++){
         pCroiseur->currentHealth[i] = 1;
@@ -160,6 +143,19 @@ croiseur_t* croiseur_new(){
 }
 destroyer_t* destroyer_new(){
     destroyer_t* pDestroyer = (destroyer_t*)(malloc(sizeof(destroyer_t)));
+    pDestroyer->pDestroyerTex = NULL;
+
+    pDestroyer->pDestroyerTex = GameSprite_new();
+    if(pDestroyer->pDestroyerTex != NULL){
+        pDestroyer->pDestroyerTex->init(pDestroyer->pDestroyerTex,"destroyer.png",(40*3)-10,35);
+        if(!pDestroyer->pDestroyerTex->isInit(pDestroyer->pDestroyerTex)){
+            MessageBoxA(NULL,"creatiobn de la tex du destroyer failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer failed",NULL,0);
+        exit(1);
+    }
     pDestroyer->len = 3;
     for(int i = 0; i < pDestroyer->len;i++){
         pDestroyer->currentHealth[i] = 1;
@@ -168,6 +164,20 @@ destroyer_t* destroyer_new(){
 }
 sous_marin_t* sousMarin_new(){
     sous_marin_t* pSousMarin = (sous_marin_t*)(malloc(sizeof(sous_marin_t)));
+    pSousMarin->pSousMarinTex = NULL;
+
+    pSousMarin->pSousMarinTex = GameSprite_new();
+    if(pSousMarin->pSousMarinTex != NULL){
+        pSousMarin->pSousMarinTex->init(pSousMarin->pSousMarinTex,"sousMarin.png",40*1,35);
+        if(!pSousMarin->pSousMarinTex->isInit(pSousMarin->pSousMarinTex)){
+            MessageBoxA(NULL,"creatiobn de la tex du sous marin failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le sous marin failed",NULL,0);
+        exit(1);
+    }
+
     pSousMarin->len = 1;
     pSousMarin->currentHealth = pSousMarin->len;
     return pSousMarin;

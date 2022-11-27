@@ -181,6 +181,7 @@ void initD3D(HWND window)
                       &d3ddev);
     //init main struct
     Game = game_new(window);
+    spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
 }
 void render_frame()
 {
@@ -205,8 +206,37 @@ void cleanD3D()
 void drawScene()
 {
     drawGrid();
+    drawPlayerBoats(Game->pPlayer_boats);
+    drawBotsBoats(Game->pBots_boats);
 
+}
+void drawPlayerBoats(player_boats_t* pP)
+{
+    if(pP->pPorteAvion->isVertical){
+        pP->pPorteAvion->pPorteAvionTex90right->setPos(pP->pPorteAvion->pPorteAvionTex90right,
+                                                       pP->pPorteAvion->pC->posInGrid.x + 5,
+                                                       pP->pPorteAvion->pC->posInGrid.y - (40*6) + 5);
+        pP->pPorteAvion->pPorteAvionTex90right->draw(pP->pPorteAvion->pPorteAvionTex90right);
+    }else{
+        pP->pPorteAvion->pPorteAvionTex->setPos(pP->pPorteAvion->pPorteAvionTex, //multiplier par 6 ou 7 ?
+                                                pP->pPorteAvion->pC->posInGrid.x - ((40*5)+30), //les textures partent de la fin et pas du debut
+                                                pP->pPorteAvion->pC->posInGrid.y + 5);
+        pP->pPorteAvion->pPorteAvionTex->draw(pP->pPorteAvion->pPorteAvionTex);
+    }
 
+}
+void drawBotsBoats(bots_boats_t* pB){
+    if(pB->pPorteAvion->isVertical){
+        pB->pPorteAvion->pPorteAvionTex90right->setPos(pB->pPorteAvion->pPorteAvionTex90right,
+                                                       pB->pPorteAvion->pC->posInGrid.x + 5,
+                                                       pB->pPorteAvion->pC->posInGrid.y - (40*6) + 5);
+        pB->pPorteAvion->pPorteAvionTex90right->draw(pB->pPorteAvion->pPorteAvionTex90right);
+    }else{
+        pB->pPorteAvion->pPorteAvionTex->setPos(pB->pPorteAvion->pPorteAvionTex,
+                                                pB->pPorteAvion->pC->posInGrid.x - ((40*5)+30), //les textures partent de la fin et pas du debut
+                                                pB->pPorteAvion->pC->posInGrid.y + 5);
+        pB->pPorteAvion->pPorteAvionTex->draw(pB->pPorteAvion->pPorteAvionTex);
+    }
 }
 void drawGrid() {
 

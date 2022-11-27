@@ -11,4 +11,7 @@ void render_frame();
 void cleanD3D();
 GameSprite_t* GameSprite_new();
 GameSprite_t* GameSprite_newWithPos(float x, float y);
+
+void drawPlayerBoats(player_boats_t* pP);
+void drawBotsBoats(bots_boats_t* pB);
 #endif //PROJET_DX_H
