@@ -267,16 +267,58 @@ void drawPlayerBoats(player_boats_t* pP)
 
 }
 void drawBotsBoats(bots_boats_t* pB){
-    if(pB->pPorteAvion->isVertical){
-        pB->pPorteAvion->pPorteAvionTex90right->setPos(pB->pPorteAvion->pPorteAvionTex90right,
-                                                       pB->pPorteAvion->pC->posInGrid.x + 5,
-                                                       pB->pPorteAvion->pC->posInGrid.y - (40*6) + 5);
-        pB->pPorteAvion->pPorteAvionTex90right->draw(pB->pPorteAvion->pPorteAvionTex90right);
-    }else{
-        pB->pPorteAvion->pPorteAvionTex->setPos(pB->pPorteAvion->pPorteAvionTex,
-                                                pB->pPorteAvion->pC->posInGrid.x - ((40*5)+30), //les textures partent de la fin et pas du debut
-                                                pB->pPorteAvion->pC->posInGrid.y + 5);
-        pB->pPorteAvion->pPorteAvionTex->draw(pB->pPorteAvion->pPorteAvionTex);
+    {
+        if (pB->pPorteAvion->isVertical) {
+            pB->pPorteAvion->pPorteAvionTex90right->setPos(pB->pPorteAvion->pPorteAvionTex90right,
+                                                           pB->pPorteAvion->pC->posInGrid.x + 5,
+                                                           pB->pPorteAvion->pC->posInGrid.y - (40 * 6) + 5);
+            pB->pPorteAvion->pPorteAvionTex90right->draw(pB->pPorteAvion->pPorteAvionTex90right);
+        } else {
+            pB->pPorteAvion->pPorteAvionTex->setPos(pB->pPorteAvion->pPorteAvionTex,
+                                                    pB->pPorteAvion->pC->posInGrid.x -
+                                                    ((40 * 5) + 30), //les textures partent de la fin et pas du debut
+                                                    pB->pPorteAvion->pC->posInGrid.y + 5);
+            pB->pPorteAvion->pPorteAvionTex->draw(pB->pPorteAvion->pPorteAvionTex);
+        }
+    }
+    {
+        for(int i = 0;i < 2;i++){
+            if(pB->pCroiseurs[i]->isVertical){
+                pB->pCroiseurs[i]->pCroiseurTex90right->setPos(pB->pCroiseurs[i]->pCroiseurTex90right,
+                                                               pB->pCroiseurs[i]->pC->posInGrid.x + 5,
+                                                               pB->pCroiseurs[i]->pC->posInGrid.y - (40*4) + 5);
+                pB->pCroiseurs[i]->pCroiseurTex90right->draw(pB->pCroiseurs[i]->pCroiseurTex90right);
+            }else{
+                pB->pCroiseurs[i]->pCroiseurTex->setPos(pB->pCroiseurs[i]->pCroiseurTex,
+                                                        pB->pCroiseurs[i]->pC->posInGrid.x - ((40*3)+30), //les textures partent de la fin et pas du debut
+                                                        pB->pCroiseurs[i]->pC->posInGrid.y + 5);
+                pB->pCroiseurs[i]->pCroiseurTex->draw(pB->pCroiseurs[i]->pCroiseurTex);
+            }
+        }
+    }
+
+    {
+        for(int i = 0;i < 3;i++){
+            if(pB->pDestroyers[i]->isVertical){
+                pB->pDestroyers[i]->pDestroyerTex90right->setPos(pB->pDestroyers[i]->pDestroyerTex90right,
+                                                                 pB->pDestroyers[i]->pC->posInGrid.x + 5,
+                                                                 pB->pDestroyers[i]->pC->posInGrid.y - (40*2) + 5);
+                pB->pDestroyers[i]->pDestroyerTex90right->draw(pB->pDestroyers[i]->pDestroyerTex90right);
+            }else{
+                pB->pDestroyers[i]->pDestroyerTex->setPos(pB->pDestroyers[i]->pDestroyerTex,
+                                                          pB->pDestroyers[i]->pC->posInGrid.x - ((40*1)+30), //les textures partent de la fin et pas du debut
+                                                          pB->pDestroyers[i]->pC->posInGrid.y + 5);
+                pB->pDestroyers[i]->pDestroyerTex->draw(pB->pDestroyers[i]->pDestroyerTex);
+            }
+        }
+    }
+    {
+        for(int i = 0;i < 4;i++){
+            pB->pSousMarins[i]->pSousMarinTex->setPos(pB->pSousMarins[i]->pSousMarinTex, //multiplier par 6 ou 7 ?
+                                                      pB->pSousMarins[i]->pC->posInGrid.x + 1, //les textures partent de la fin et pas du debut
+                                                      pB->pSousMarins[i]->pC->posInGrid.y + 5);
+            pB->pSousMarins[i]->pSousMarinTex->draw(pB->pSousMarins[i]->pSousMarinTex);
+        }
     }
 }
 void drawGrid() {
