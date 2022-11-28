@@ -46,13 +46,14 @@ Case_t* case_new(int rowIndex,int collumnIndex,int bBot)
     Case_t* pCase = (Case_t*)(malloc(sizeof(Case_t)));
     if(pCase != NULL){
         pCase->id = ((rowIndex*15) + collumnIndex);
+        pCase->isOccupied = 0;
         if(bBot){
             //on assigne la pos du coin hut gauche en px
-            pCase->posInGrid.x = collumnIndex*((WINDOW_WIDTH/2)/15);
+            pCase->posInGrid.x = (WINDOW_WIDTH/2) +collumnIndex*((WINDOW_WIDTH/2)/15);
             pCase->posInGrid.y = rowIndex*((WINDOW_WIDTH/2)/15);
         }
         else{
-            pCase->posInGrid.x = (WINDOW_WIDTH/2) + collumnIndex*((WINDOW_WIDTH/2)/15);
+            pCase->posInGrid.x =  collumnIndex*((WINDOW_WIDTH/2)/15);
             pCase->posInGrid.y = rowIndex*((WINDOW_WIDTH/2)/15);
         }
         return pCase;
@@ -116,9 +117,7 @@ porte_avion_t* porteAvion_new(){
         exit(1);
     }
     pPorteAvion->len = 7;
-    for(int i = 0; i < pPorteAvion->len;i++){
-        pPorteAvion->currentHealth[i] = 1;
-    }
+
     return pPorteAvion;
 }
 croiseur_t* croiseur_new(){
@@ -135,16 +134,25 @@ croiseur_t* croiseur_new(){
         MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur failed",NULL,0);
         exit(1);
     }
-    pCroiseur->len = 5;
-    for(int i = 0; i < pCroiseur->len;i++){
-        pCroiseur->currentHealth[i] = 1;
+    pCroiseur->pCroiseurTex90right = NULL;
+    pCroiseur->pCroiseurTex90right = GameSprite_new();
+    if(pCroiseur->pCroiseurTex90right != NULL){
+        pCroiseur->pCroiseurTex90right->init(pCroiseur->pCroiseurTex90right,"../img/croiseur90right.png",35 ,(40*5)-10);
+        if(!pCroiseur->pCroiseurTex90right->isInit(pCroiseur->pCroiseurTex90right)){
+            MessageBoxA(NULL,"creatiobn de la tex du croiseur failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur failed",NULL,0);
+        exit(1);
     }
+    pCroiseur->len = 5;
+
     return pCroiseur;
 }
 destroyer_t* destroyer_new(){
     destroyer_t* pDestroyer = (destroyer_t*)(malloc(sizeof(destroyer_t)));
     pDestroyer->pDestroyerTex = NULL;
-
     pDestroyer->pDestroyerTex = GameSprite_new();
     if(pDestroyer->pDestroyerTex != NULL){
         pDestroyer->pDestroyerTex->init(pDestroyer->pDestroyerTex,"../img/destroyer.png",(40*3)-10,35);
@@ -156,10 +164,20 @@ destroyer_t* destroyer_new(){
         MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer failed",NULL,0);
         exit(1);
     }
-    pDestroyer->len = 3;
-    for(int i = 0; i < pDestroyer->len;i++){
-        pDestroyer->currentHealth[i] = 1;
+    pDestroyer->pDestroyerTex90right = NULL;
+    pDestroyer->pDestroyerTex90right = GameSprite_new();
+    if(pDestroyer->pDestroyerTex90right != NULL){
+        pDestroyer->pDestroyerTex90right->init(pDestroyer->pDestroyerTex90right,"../img/destroyer90right.png",35,(40*3)-10);
+        if(!pDestroyer->pDestroyerTex90right->isInit(pDestroyer->pDestroyerTex90right)){
+            MessageBoxA(NULL,"creatiobn de la tex du destroyer failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer failed",NULL,0);
+        exit(1);
     }
+    pDestroyer->len = 3;
+
     return pDestroyer;
 }
 sous_marin_t* sousMarin_new(){
@@ -168,7 +186,7 @@ sous_marin_t* sousMarin_new(){
 
     pSousMarin->pSousMarinTex = GameSprite_new();
     if(pSousMarin->pSousMarinTex != NULL){
-        pSousMarin->pSousMarinTex->init(pSousMarin->pSousMarinTex,"../img/sousMarin.png",40*1,35);
+        pSousMarin->pSousMarinTex->init(pSousMarin->pSousMarinTex,"../img/sousMarin.png",38,35);
         if(!pSousMarin->pSousMarinTex->isInit(pSousMarin->pSousMarinTex)){
             MessageBoxA(NULL,"creatiobn de la tex du sous marin failed",NULL,0);
             exit(1);
@@ -179,7 +197,7 @@ sous_marin_t* sousMarin_new(){
     }
 
     pSousMarin->len = 1;
-    pSousMarin->currentHealth = pSousMarin->len;
+
     return pSousMarin;
 }
 #pragma endregion
