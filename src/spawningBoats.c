@@ -208,7 +208,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
     }else{
         while(1){
             randomCase = rand()%224;
-            if((randomCase%15) > 6){
+            if((randomCase%15) < 9){
                 pB->pPorteAvion->caseId = randomCase;
                 printf("l'id de la case choisi pour le porte avion du bot est : %d et il est horizontal\n",randomCase);
                 break;
@@ -236,7 +236,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
             pB->pPorteAvion->currentHealth[j]->healthStatus = 1;
             pB->pPorteAvion->currentHealth[j]->isOccupied = 1;
             printf("%d, ",pB->pPorteAvion->currentHealth[j]->id);
-            nextCase -= 1;
+            nextCase += 1;
             usedCases = getCasePtrWithId(0,nextCase);
         }
     }
@@ -255,7 +255,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
         }else{
             while(1){
                 randomCase = rand()%224;
-                if((randomCase%15) > 4 && isGoingToFit(0,5,bVertical,randomCase,pB,pP)){
+                if((randomCase%15) < 10 && isGoingToFit(0,5,bVertical,randomCase,pB,pP)){
                     pB->pCroiseurs[m]->caseId = randomCase;
                     printf("l'id de la case choisi pour le croiseur %d du bot est : %d et il est horizontal\n",m,randomCase);
                     break;
@@ -283,12 +283,13 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
                 pB->pCroiseurs[m]->currentHealth[j]->healthStatus = 1;
                 pB->pCroiseurs[m]->currentHealth[j]->isOccupied = 1;
                 printf("%d, ",pB->pCroiseurs[m]->currentHealth[j]->id);
-                nextCase -= 1;
+                nextCase += 1;
                 usedCases = getCasePtrWithId(0,nextCase);
             }
         }
         printf("sont occupees par le croiseur numero %d.\n",m);
     }
+    printf("\n");
     for(int n = 0;n < 3;n++){
         bVertical = rand()%2;
         if(bVertical){
@@ -303,7 +304,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
         }else{
             while(1){
                 randomCase = rand()%224;
-                if((randomCase%15) > 2 && isGoingToFit(0,3,bVertical,randomCase,pB,pP)){
+                if((randomCase%15) < 12 && isGoingToFit(0,3,bVertical,randomCase,pB,pP)){
                     pB->pDestroyers[n]->caseId = randomCase;
                     printf("l'id de la case choisi pour le destroyer %d du bot est : %d en horizontal\n",n,randomCase);
                     break;
@@ -331,12 +332,13 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
                 pB->pDestroyers[n]->currentHealth[j]->healthStatus = 1;
                 pB->pDestroyers[n]->currentHealth[j]->isOccupied = 1;
                 printf("%d, ",pB->pDestroyers[n]->currentHealth[j]->id);
-                nextCase -= 1;
+                nextCase += 1;
                 usedCases = getCasePtrWithId(0,nextCase);
             }
         }
         printf("sont occupees par le destroyeur numero %d.\n",n);
     }
+    printf("\n");
     for(int p = 0;p < 4;p++){
         while(1){
             randomCase = rand()%224;
@@ -393,7 +395,7 @@ int isGoingToFit(int isPlayer,int len,int isVertical,int caseId,bots_boats_t* pB
                 bufferCase = getCasePtrWithId(0,nextCase);
                 if(bufferCase->isOccupied) {return 0;}
                 else{
-                    nextCase--;
+                    nextCase++;
                 }
             }
             return 1;

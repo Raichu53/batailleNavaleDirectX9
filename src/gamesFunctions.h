@@ -45,7 +45,7 @@ typedef struct sous_marin{
     Case_t* currentHealth; //array en partant de l'avant vers l'arriere du bateau pour savoir ou il y a des hits
     //il faut placer les images dans le meme dossier que l'exe
     GameSprite_t* pSousMarinTex;
-    GameSprite_t* pSousMarinTex90right;
+    GameSprite_t* pSousMarinTexMirrored;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -56,6 +56,8 @@ typedef struct destroyer{
 
     GameSprite_t* pDestroyerTex;
     GameSprite_t* pDestroyerTex90right;
+    GameSprite_t* pDestroyerTexMirrored;
+    GameSprite_t* pDestroyerTex90rightMirrored;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -66,6 +68,8 @@ typedef struct croiseur{
 
     GameSprite_t* pCroiseurTex;
     GameSprite_t* pCroiseurTex90right;
+    GameSprite_t* pCroiseurTexMirrored;
+    GameSprite_t* pCroiseurTex90rightMirrored;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -76,6 +80,8 @@ typedef struct porte_avion{
 
     GameSprite_t* pPorteAvionTex;
     GameSprite_t* pPorteAvionTex90right;
+    GameSprite_t* pPorteAvionTexMirrored;
+    GameSprite_t* pPorteAvionTex90rightMirrored;
     int caseId;
     int isVertical;
     Case_t* pC;

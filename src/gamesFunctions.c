@@ -116,6 +116,31 @@ porte_avion_t* porteAvion_new(){
         MessageBoxA(NULL,"creation du ptr GameSprite pour le porte avion failed",NULL,0);
         exit(1);
     }
+
+    pPorteAvion->pPorteAvionTex90rightMirrored = NULL;
+    pPorteAvion->pPorteAvionTex90rightMirrored = GameSprite_new();
+    if(pPorteAvion->pPorteAvionTex90rightMirrored != NULL){
+        pPorteAvion->pPorteAvionTex90rightMirrored->init(pPorteAvion->pPorteAvionTex90rightMirrored,"../img/porteAvion90rightMirrored.png",35,(40*7)-10);//param w multiplié par la longeur du bateau
+        if(!pPorteAvion->pPorteAvionTex90rightMirrored->isInit(pPorteAvion->pPorteAvionTex90rightMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du porte avion 90mirrored right failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le porte avion90mirrored failed",NULL,0);
+        exit(1);
+    }
+    pPorteAvion->pPorteAvionTexMirrored = NULL;
+    pPorteAvion->pPorteAvionTexMirrored = GameSprite_new();
+    if(pPorteAvion->pPorteAvionTexMirrored != NULL){
+        pPorteAvion->pPorteAvionTexMirrored->init(pPorteAvion->pPorteAvionTexMirrored,"../img/porteAvionMirrored.png",(40*7)-10,35);//param w multiplié par la longeur du bateau
+        if(!pPorteAvion->pPorteAvionTexMirrored->isInit(pPorteAvion->pPorteAvionTexMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du porte avion 90 right failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le porte avion failed",NULL,0);
+        exit(1);
+    }
     pPorteAvion->len = 7;
 
     return pPorteAvion;
@@ -139,11 +164,35 @@ croiseur_t* croiseur_new(){
     if(pCroiseur->pCroiseurTex90right != NULL){
         pCroiseur->pCroiseurTex90right->init(pCroiseur->pCroiseurTex90right,"../img/croiseur90right.png",35 ,(40*5)-10);
         if(!pCroiseur->pCroiseurTex90right->isInit(pCroiseur->pCroiseurTex90right)){
-            MessageBoxA(NULL,"creatiobn de la tex du croiseur failed",NULL,0);
+            MessageBoxA(NULL,"creatiobn de la tex du croiseur90 failed",NULL,0);
             exit(1);
         }
     }else{
-        MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur failed",NULL,0);
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur90 failed",NULL,0);
+        exit(1);
+    }
+    pCroiseur->pCroiseurTex90rightMirrored = NULL;
+    pCroiseur->pCroiseurTex90rightMirrored = GameSprite_new();
+    if(pCroiseur->pCroiseurTex90rightMirrored != NULL){
+        pCroiseur->pCroiseurTex90rightMirrored->init(pCroiseur->pCroiseurTex90rightMirrored,"../img/croiseur90rightMirrored.png",35 ,(40*5)-10);
+        if(!pCroiseur->pCroiseurTex90rightMirrored->isInit(pCroiseur->pCroiseurTex90rightMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du croiseur90mirrored failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur90mirrored failed",NULL,0);
+        exit(1);
+    }
+    pCroiseur->pCroiseurTexMirrored = NULL;
+    pCroiseur->pCroiseurTexMirrored = GameSprite_new();
+    if(pCroiseur->pCroiseurTexMirrored != NULL){
+        pCroiseur->pCroiseurTexMirrored->init(pCroiseur->pCroiseurTexMirrored,"../img/croiseurMirrored.png",(40*5)-10,35);
+        if(!pCroiseur->pCroiseurTexMirrored->isInit(pCroiseur->pCroiseurTexMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du croiseur mirrored failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le croiseur mirrored failed",NULL,0);
         exit(1);
     }
     pCroiseur->len = 5;
@@ -169,11 +218,35 @@ destroyer_t* destroyer_new(){
     if(pDestroyer->pDestroyerTex90right != NULL){
         pDestroyer->pDestroyerTex90right->init(pDestroyer->pDestroyerTex90right,"../img/destroyer90right.png",35,(40*3)-10);
         if(!pDestroyer->pDestroyerTex90right->isInit(pDestroyer->pDestroyerTex90right)){
-            MessageBoxA(NULL,"creatiobn de la tex du destroyer failed",NULL,0);
+            MessageBoxA(NULL,"creatiobn de la tex du destroyer90 failed",NULL,0);
             exit(1);
         }
     }else{
-        MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer failed",NULL,0);
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer90 failed",NULL,0);
+        exit(1);
+    }
+    pDestroyer->pDestroyerTex90rightMirrored = NULL;
+    pDestroyer->pDestroyerTex90rightMirrored = GameSprite_new();
+    if(pDestroyer->pDestroyerTex90rightMirrored != NULL){
+        pDestroyer->pDestroyerTex90rightMirrored->init(pDestroyer->pDestroyerTex90rightMirrored,"../img/destroyer90rightMirrored.png",35,(40*3)-10);
+        if(!pDestroyer->pDestroyerTex90rightMirrored->isInit(pDestroyer->pDestroyerTex90rightMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du destroyer90mirrored failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer 90 mirrored failed",NULL,0);
+        exit(1);
+    }
+    pDestroyer->pDestroyerTexMirrored = NULL;
+    pDestroyer->pDestroyerTexMirrored = GameSprite_new();
+    if(pDestroyer->pDestroyerTexMirrored != NULL){
+        pDestroyer->pDestroyerTexMirrored->init(pDestroyer->pDestroyerTexMirrored,"../img/destroyerMirrored.png",(40*3)-10,35);
+        if(!pDestroyer->pDestroyerTexMirrored->isInit(pDestroyer->pDestroyerTexMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du destroyer mirrored failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le destroyer mirrored failed",NULL,0);
         exit(1);
     }
     pDestroyer->len = 3;
@@ -182,8 +255,8 @@ destroyer_t* destroyer_new(){
 }
 sous_marin_t* sousMarin_new(){
     sous_marin_t* pSousMarin = (sous_marin_t*)(malloc(sizeof(sous_marin_t)));
-    pSousMarin->pSousMarinTex = NULL;
 
+    pSousMarin->pSousMarinTex = NULL;
     pSousMarin->pSousMarinTex = GameSprite_new();
     if(pSousMarin->pSousMarinTex != NULL){
         pSousMarin->pSousMarinTex->init(pSousMarin->pSousMarinTex,"../img/sousMarin.png",38,35);
@@ -193,6 +266,19 @@ sous_marin_t* sousMarin_new(){
         }
     }else{
         MessageBoxA(NULL,"creation du ptr GameSprite pour le sous marin failed",NULL,0);
+        exit(1);
+    }
+
+    pSousMarin->pSousMarinTexMirrored = NULL;
+    pSousMarin->pSousMarinTexMirrored = GameSprite_new();
+    if(pSousMarin->pSousMarinTexMirrored != NULL){
+        pSousMarin->pSousMarinTexMirrored->init(pSousMarin->pSousMarinTexMirrored,"../img/sousMarinMirrored.png",38,35);
+        if(!pSousMarin->pSousMarinTexMirrored->isInit(pSousMarin->pSousMarinTexMirrored)){
+            MessageBoxA(NULL,"creatiobn de la tex du sous marin mirrored failed",NULL,0);
+            exit(1);
+        }
+    }else{
+        MessageBoxA(NULL,"creation du ptr GameSprite pour le sous marin mirrored failed",NULL,0);
         exit(1);
     }
 
