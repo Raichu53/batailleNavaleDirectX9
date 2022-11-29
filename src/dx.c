@@ -82,13 +82,11 @@ void draw(struct GameSprite* pGS)
 {
     if (pGS->sprite && pGS->tex)
     {
-        pGS->sprite->lpVtbl->Begin(pGS->sprite,D3DXSPRITE_ALPHABLEND);
-
+        pGS->sprite->lpVtbl->Begin(pGS->sprite,D3DXSPRITE_ALPHABLEND );
 
         pGS->sprite->lpVtbl->Draw(pGS->sprite,pGS->tex, NULL, NULL, &pGS->pos, pGS->color);
 
         pGS->sprite->lpVtbl->End(pGS->sprite);
-
     }
 }
 D3DXVECTOR2 getPos(struct GameSprite* pGS)
@@ -120,7 +118,7 @@ GameSprite_t* GameSprite_new()
     pGS->pos.x = 0;
     pGS->pos.y = 0;
     pGS->pos.z = 0;
-
+    //A is supposed to be the alpha
     pGS->color = D3DCOLOR_ARGB(255, 255, 255, 255);
 
     pGS->initialized = 0;
@@ -186,7 +184,7 @@ void initD3D(HWND window)
 void render_frame()
 {
     // Clear rose
-    d3ddev->lpVtbl->Clear(d3ddev,0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
+    d3ddev->lpVtbl->Clear(d3ddev,0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(37, 150, 190), 1.0f, 0);
 
     d3ddev->lpVtbl->BeginScene(d3ddev);    // demarre la scene 3D
 
@@ -219,7 +217,7 @@ void drawPlayerBoats(player_boats_t* pP)
                                                            pP->pPorteAvion->pC->posInGrid.y - (40*6) + 5);
             pP->pPorteAvion->pPorteAvionTex90right->draw(pP->pPorteAvion->pPorteAvionTex90right);
         }else{
-            pP->pPorteAvion->pPorteAvionTex->setPos(pP->pPorteAvion->pPorteAvionTex, //multiplier par 6 ou 7 ?
+            pP->pPorteAvion->pPorteAvionTex->setPos(pP->pPorteAvion->pPorteAvionTex,
                                                     pP->pPorteAvion->pC->posInGrid.x - ((40*5)+30), //les textures partent de la fin et pas du debut
                                                     pP->pPorteAvion->pC->posInGrid.y + 5);
             pP->pPorteAvion->pPorteAvionTex->draw(pP->pPorteAvion->pPorteAvionTex);
@@ -328,10 +326,10 @@ void drawGrid() {
             //la bare en haut et le coté droit
             drawLine((D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x,Game->botPlayground[i][k]->posInGrid.y},
                      (D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->botPlayground[i][k]->posInGrid.y},
-                     1, D3DCOLOR_XRGB(0,0,0));
+                     1, D3DCOLOR_XRGB(255,255,255));
             drawLine((D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->botPlayground[i][k]->posInGrid.y  },
                      (D3DXVECTOR2){Game->botPlayground[i][k]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->botPlayground[i][k]->posInGrid.y + ((WINDOW_WIDTH/2)/15) },
-                     1, D3DCOLOR_XRGB(0,0,0));
+                     1, D3DCOLOR_XRGB(255,255,255));
         }
     }
     //player
@@ -340,10 +338,10 @@ void drawGrid() {
             //la bare en haut et le coté droit
             drawLine((D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x,Game->playerPlayground[j][l]->posInGrid.y},
                      (D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->playerPlayground[j][l]->posInGrid.y},
-                     1, D3DCOLOR_XRGB(0,0,0));
+                     1, D3DCOLOR_XRGB(255,255,255));
             drawLine((D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->playerPlayground[j][l]->posInGrid.y  },
                      (D3DXVECTOR2){Game->playerPlayground[j][l]->posInGrid.x + ((WINDOW_WIDTH/2)/15),Game->playerPlayground[j][l]->posInGrid.y + ((WINDOW_WIDTH/2)/15) },
-                     1, D3DCOLOR_XRGB(0,0,0));
+                     1, D3DCOLOR_XRGB(255,255,255));
         }
     }
     drawLine((D3DXVECTOR2){WINDOW_WIDTH/2,0},(D3DXVECTOR2){WINDOW_WIDTH/2,WINDOW_HEIGHT},1,D3DCOLOR_XRGB(255,0,0));
