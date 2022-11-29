@@ -120,4 +120,6 @@ porte_avion_t* porteAvion_new();
 croiseur_t* croiseur_new();
 destroyer_t* destroyer_new();
 sous_marin_t* sousMarin_new();
+
+void initTex(GameSprite_t* pG,const char* str,int initSizeW,int initSizeH);
 #endif //PROJET_GAMESFUNCTIONS_H
