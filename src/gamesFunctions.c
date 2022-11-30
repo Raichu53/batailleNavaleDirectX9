@@ -3,6 +3,28 @@
 //
 #include "includes.h"
 #pragma region constructeurs
+/// Cette fonction crée l'objet Game qui va contenir 4ptr et le window Handle
+/// un ptr vers le doubleTableau de type Case_t* pour le joueur et un autre ptr identique pour le bot
+/// un ptr vers une struct qui contient les infos des bateau du joueur et un autre ptr identique pour le bot
+/// \param window
+/// \return un ptr vers l'objet Game crée
+/*
+ *                                           Game
+ *                                            |
+ *         ---------------------------------------------------------------------------
+ *         |            |                   |                   |                    |
+ *       window         |                   |                   |                    |
+ *                ptr grille player     ptr grille bot    ptr bateau player      ptr bateau bot
+ * (type)         (Case_t* tab[][])    (Case_t* tab[][])   (pPLayerBoats*)       (pBotsBoats*) -> (identique que pPlayerBoats*)
+ *                                                              |
+ *                                                              |
+ *                                                         ptr porteAvion -> un tab de 7 Case_t qui represente la vie, les ptr vers les textures...
+ *                                                         ptr croiseur[2] -> un tab de 5 qui .....
+ *                                                         ptr destroyer[3] -> un tab de 3  qui .......
+ *                                                         ptr sousMarin[4] -> un tab du 1 Case_t qui .....
+ *                                                                       |
+ *                                                          cet index correspond au nombre d'entités
+ */
 Game_t* game_new(HWND window)
 {
     Game_t* pGame = (Game_t*)(malloc(sizeof(Game_t)));
@@ -34,13 +56,18 @@ Game_t* game_new(HWND window)
             exit(1);
         }
 
-
+        pGame->cursorPos = malloc(sizeof(LPPOINT));
         return pGame;
     }else{
         MessageBoxA(NULL,"Game* is NULL",NULL,0);
         exit(1);
     }
 }
+/// ce constructeur est utilisé dans le constructeur de Game pour initialiser chaque case de la grille
+/// \param rowIndex sur quelle ligne on est
+/// \param collumnIndex sur quelle collone on est
+/// \param bBot si ce param est true on rajoute 600px lors de l'attribution du x du vec2 attribut de Case_t
+/// \return un ptr vers une Case_t
 Case_t* case_new(int rowIndex,int collumnIndex,int bBot)
 {
     Case_t* pCase = (Case_t*)(malloc(sizeof(Case_t)));
@@ -62,6 +89,8 @@ Case_t* case_new(int rowIndex,int collumnIndex,int bBot)
         exit(1);
     }
 }
+/// ce constructeur est utilisé dans le constructeur de Game pour initialiser les tableau de ptrs vers les bateau du bot
+/// \return
 bots_boats_t* bots_boats_new(){
     bots_boats_t* pBotsBoats = (bots_boats_t*)(malloc(sizeof(bots_boats_t)));
     pBotsBoats->pPorteAvion = porteAvion_new();
@@ -76,6 +105,8 @@ bots_boats_t* bots_boats_new(){
     }
     return pBotsBoats;
 }
+/// ce constructeur est utilisé dans le constructeur de Game pour initialiser les tableau de ptrs vers les bateau du player
+/// \return
 player_boats_t* player_boats_new(){
     player_boats_t* pPlayerBoats = (player_boats_t*)(malloc(sizeof(player_boats_t)));
     pPlayerBoats->pPorteAvion = porteAvion_new();
@@ -90,6 +121,8 @@ player_boats_t* player_boats_new(){
     }
     return pPlayerBoats;
 }
+/// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
+/// \return
 porte_avion_t* porteAvion_new(){
     porte_avion_t* pPorteAvion = (porte_avion_t*)(malloc(sizeof(porte_avion_t)));
 
@@ -109,6 +142,8 @@ porte_avion_t* porteAvion_new(){
 
     return pPorteAvion;
 }
+/// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
+/// \return
 croiseur_t* croiseur_new(){
     croiseur_t* pCroiseur = (croiseur_t*)(malloc(sizeof(croiseur_t)));
 
@@ -127,6 +162,8 @@ croiseur_t* croiseur_new(){
 
     return pCroiseur;
 }
+/// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
+/// \return
 destroyer_t* destroyer_new(){
     destroyer_t* pDestroyer = (destroyer_t*)(malloc(sizeof(destroyer_t)));
 
@@ -145,6 +182,8 @@ destroyer_t* destroyer_new(){
 
     return pDestroyer;
 }
+/// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
+/// \return
 sous_marin_t* sousMarin_new(){
     sous_marin_t* pSousMarin = (sous_marin_t*)(malloc(sizeof(sous_marin_t)));
 

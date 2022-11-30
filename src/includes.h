@@ -13,6 +13,7 @@
 #include "gamesFunctions.h"
 #include "dx.h"
 #include "spawningBoats.h"
+#include "movingBoats.h"
 
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 600

@@ -101,6 +101,7 @@ typedef struct player_boats{
 
 typedef struct Game{
     HWND window;
+    LPPOINT cursorPos;
     //le 1er index est la hauteur le 2eme est la largeur
     Case_t* botPlayground[GAME_DIMENSION][GAME_DIMENSION];
     Case_t* playerPlayground[GAME_DIMENSION][GAME_DIMENSION];

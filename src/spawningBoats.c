@@ -220,6 +220,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
     pB->pPorteAvion->pC = getCasePtrWithId(0,pB->pPorteAvion->caseId);
     nextCase = randomCase;
     usedCases = pB->pPorteAvion->pC;
+
     printf("Les cases :");
     if(bVertical){
         for(int k = 0; k < 7; k++){
