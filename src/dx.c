@@ -238,7 +238,6 @@ void drawPlayerBoats(player_boats_t* pP)
             }
         }
     }
-
     {
         for(int i = 0;i < 3;i++){
             if(pP->pDestroyers[i]->isVertical){
