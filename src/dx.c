@@ -205,8 +205,10 @@ void drawScene()
 {
     drawGrid();
     drawPlayerBoats(Game->pPlayer_boats);
+    if(GetAsyncKeyState(0x56)){
+        //version finale mettre drawBotsBoats dedans
+    }
     drawBotsBoats(Game->pBots_boats);
-
 }
 void drawPlayerBoats(player_boats_t* pP)
 {

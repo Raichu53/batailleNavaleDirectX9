@@ -116,7 +116,7 @@ typedef struct Game{
     destroyer_t* destroyerPtr;
     croiseur_t* croiseurPtr;
     porte_avion_t* porteAvionPtr;
-
+    Case_t* pClickedCase;
 }Game_t;
 
 Case_t* case_new(int rowLen,int collumnlen,int bBot);

@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
         render_frame();
         playerActions();
-        inputs(Game->index,Game->porteAvionPtr,Game->croiseurPtr,Game->destroyerPtr,Game->sousMarinPtr);
+
 
         if (msg.message == WM_QUIT || GetAsyncKeyState(VK_ESCAPE))//la croix ou echap
             break;
