@@ -1,7 +1,7 @@
 //
 // Created by matt0 on 11/16/2022.
 //
-#include "includes.h"
+#include "../headers/includes.h"
 #pragma region constructeurs
 /// Cette fonction crée l'objet Game qui va contenir 4ptr et le window Handle
 /// un ptr vers le doubleTableau de type Case_t* pour le joueur et un autre ptr identique pour le bot

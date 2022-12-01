@@ -1,7 +1,7 @@
 //
 // Created by matt0 on 11/29/2022.
 //
-#include "includes.h"
+#include "../headers/includes.h"
 /*
  * 1 - on attend un clic
  * 2 - on cherche la case ou il a cliquer
@@ -586,7 +586,6 @@ int cursorIsInWindow(int side, LPPOINT cursorPos, vec2_t windowPos) {
         return 0;
     }
 }
-
 Case_t* getCasePtrWithPxCoords(int isPlayer, vec2_t relativeXY) {
     //printf("%d %d\n",relativeXY.x,relativeXY.y);
     vec2_t pV;

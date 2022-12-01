@@ -2,7 +2,7 @@
 // Created by matt0 on 11/27/2022.
 //
 
-#include "includes.h"
+#include "../headers/includes.h"
 #include <time.h>
 
 ///pour faire spawn les bateau de maniere random on selectionne une case dans la grille et on check si c'est possible
