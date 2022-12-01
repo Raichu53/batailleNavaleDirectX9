@@ -55,7 +55,9 @@ Game_t* game_new(HWND window)
             MessageBoxA(NULL,"creation du ptr pPlayer_boats failed",NULL,0);
             exit(1);
         }
-
+        pGame->waitingInput = 0;
+        pGame->inputHasBeenSend = 0;
+        pGame->index = 0;
         pGame->cursorPos = malloc(sizeof(LPPOINT));
         return pGame;
     }else{

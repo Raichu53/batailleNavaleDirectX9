@@ -181,7 +181,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
             }
         }
 
-        pP->pSousMarins[l]->isVertical = bVertical;
+        pP->pSousMarins[l]->isVertical = 0;
         pP->pSousMarins[l]->pC = getCasePtrWithId(1,pP->pSousMarins[l]->caseId);
 
         pP->pSousMarins[l]->currentHealth = pP->pSousMarins[l]->pC;
@@ -350,7 +350,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
             }
         }
 
-        pB->pSousMarins[p]->isVertical = bVertical;
+        pB->pSousMarins[p]->isVertical = 0;
         pB->pSousMarins[p]->pC = getCasePtrWithId(0,pB->pSousMarins[p]->caseId);
 
         pB->pSousMarins[p]->currentHealth = pB->pSousMarins[p]->pC;

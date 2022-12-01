@@ -100,6 +100,7 @@ typedef struct player_boats{
 }player_boats_t;
 
 typedef struct Game{
+    int waitingInput,inputHasBeenSend,index;
     HWND window;
     vec2_t windowPos;
     LPPOINT cursorPos;
@@ -111,7 +112,10 @@ typedef struct Game{
     bots_boats_t* pBots_boats;
     player_boats_t* pPlayer_boats;
 
-
+    sous_marin_t* sousMarinPtr;
+    destroyer_t* destroyerPtr;
+    croiseur_t* croiseurPtr;
+    porte_avion_t* porteAvionPtr;
 
 }Game_t;
 

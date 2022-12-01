@@ -14,10 +14,7 @@ void playerActions(){
     int boatSize = 0;
     void* ptr = NULL;
     Case_t* pClickedCase = NULL;
-    sous_marin_t* sousMarinPtr = NULL;
-    destroyer_t* destroyerPtr = NULL;
-    croiseur_t* croiseurPtr = NULL;
-    porte_avion_t* porteAvionPtr = NULL;
+
 
     GetCursorPos(Game->cursorPos);
     Game->windowPos = GetWindowPos();
@@ -34,20 +31,28 @@ void playerActions(){
                         boatSize = *(int*)ptr; //la longeur d'un bateau est a l'offset 0 de la struct
                         switch (boatSize) {
                             case 1: //sous marin
-                                sousMarinPtr = (sous_marin_t*)findBoatPtrWithCase(1,pClickedCase);
-                                printf("sous marin selected\n");
+                                Game->sousMarinPtr = (sous_marin_t*)findBoatPtrWithCase(1,pClickedCase);
+                                printf("sous marin selected, waiting for input...\n");
+                                Game->waitingInput = 1;
+                                Game->index = 4;
                                 break;
                             case 3:
-                                destroyerPtr = (destroyer_t*)findBoatPtrWithCase(1,pClickedCase);
-                                printf("destroyer selected\n");
+                                Game->destroyerPtr = (destroyer_t*)findBoatPtrWithCase(1,pClickedCase);
+                                printf("destroyer selected, waiting for input...\n");
+                                Game->waitingInput = 1;
+                                Game->index = 3;
                                 break;
                             case 5:
-                                croiseurPtr = (croiseur_t *)findBoatPtrWithCase(1,pClickedCase);
-                                printf("croiseur selected\n");
+                                Game->croiseurPtr = (croiseur_t *)findBoatPtrWithCase(1,pClickedCase);
+                                printf("croiseur selected, waiting for input...\n");
+                                Game->waitingInput = 1;
+                                Game->index = 2;
                                 break;
                             case 7:
-                                porteAvionPtr = (porte_avion_t*)findBoatPtrWithCase(1,pClickedCase);
-                                printf("porteAvion selected\n");
+                                Game->porteAvionPtr = (porte_avion_t*)findBoatPtrWithCase(1,pClickedCase);
+                                printf("porteAvion selected, waiting for input...\n");
+                                Game->waitingInput = 1;
+                                Game->index = 1;
                                 break;
                             default:
                                 MessageBoxA(NULL,"fct : PlayerActions() failed",NULL,0);
@@ -62,6 +67,89 @@ void playerActions(){
                 printf("bot side\n");
             }
         }
+    }
+}
+int inputs(int index,porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins){
+    if(Game->waitingInput){
+        if(GetAsyncKeyState(90)){
+            printf("z\n");
+            Game->waitingInput = 0;
+            Game->inputHasBeenSend = 1;
+        }else if(GetAsyncKeyState(83)){
+            printf("s\n");
+            Game->waitingInput = 0;
+            Game->inputHasBeenSend = -1;
+        }
+    }
+    if(Game->inputHasBeenSend == 1){
+        moveBoat(index,1,Game->porteAvionPtr,Game->croiseurPtr,Game->destroyerPtr,Game->sousMarinPtr);
+        Game->inputHasBeenSend = 0;
+    }
+    else if(Game->inputHasBeenSend == -1){
+        moveBoat(index,0,Game->porteAvionPtr,Game->croiseurPtr,Game->destroyerPtr,Game->sousMarinPtr);
+        Game->inputHasBeenSend = 0;
+    }
+    return 0;
+}
+//index = 1 pour porte avion 2 croiseur 3 destroyer et 4 sous marin
+int moveBoat(int index,int bForward,
+             porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins)
+{
+    switch (index) {
+        case 1:
+            if(pPorteAvion->isVertical){
+                if(bForward){
+                    //printf("on avance\n");
+                }else{
+                    //printf("on recule\n");
+                }
+            }else{
+                if(bForward){
+
+                }else{
+
+                }
+            }
+            break;
+        case 2:
+            if(pCroiseurs->isVertical){
+                if(bForward){
+
+                }else{
+
+                }
+            }else{
+                if(bForward){
+
+                }else{
+
+                }
+            }
+            break;
+        case 3:
+            if(pDestroyers->isVertical){
+                if(bForward){
+
+                }else{
+
+                }
+            }else{
+                if(bForward){
+
+                }else{
+
+                }
+            }
+            break;
+        case 4:
+            if(bForward){
+
+            }else{
+
+            }
+            break;
+        default:
+            break;
     }
 }
 ///
