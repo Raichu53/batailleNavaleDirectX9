@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     //on "enregistre" la classe
     RegisterClassEx(&wcx);
     //on crée la fenetre
-    HWND window = CreateWindowEx(0, wcx.lpszClassName, "bataile navale", WS_OVERLAPPEDWINDOW,
+    HWND window = CreateWindowEx(0, wcx.lpszClassName, "bataille navale", WS_OVERLAPPEDWINDOW,
                              100, 100, WINDOW_WIDTH+20, WINDOW_HEIGHT+40, NULL, NULL, wcx.hInstance, NULL);
                                                     //pour counter l'app bar
     // montrer la fenetre
@@ -43,10 +43,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
 
         render_frame();
-        playerActions();
+        if(Game->playerTurn){//on met playerTurn = 0 si il y a eu tir ou mouvement
+            playerActions();
+        }else{
+            botAction();
+        }
 
-
-        if (msg.message == WM_QUIT || GetAsyncKeyState(VK_ESCAPE))//la croix ou echap
+        if (msg.message == WM_QUIT )//la croix
             break;
 
         Sleep(10);

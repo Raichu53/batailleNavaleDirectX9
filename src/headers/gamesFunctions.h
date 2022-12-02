@@ -102,7 +102,7 @@ typedef struct player_boats{
 }player_boats_t;
 
 typedef struct Game{
-    int waitingInput,inputHasBeenSend,index;
+    int waitingInput,inputHasBeenSend,index,toggleMenu,playerTurn;
     HWND window;
     vec2_t windowPos;
     LPPOINT cursorPos;
@@ -110,7 +110,6 @@ typedef struct Game{
     //le 1er index est la hauteur le 2eme est la largeur
     Case_t* botPlayground[GAME_DIMENSION][GAME_DIMENSION];
     Case_t* playerPlayground[GAME_DIMENSION][GAME_DIMENSION];
-
     bots_boats_t* pBots_boats;
     player_boats_t* pPlayer_boats;
 

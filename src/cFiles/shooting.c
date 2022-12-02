@@ -41,8 +41,9 @@ void fire(Case_t* clickedCase)
                 break;
         }
     }else{
-
+        printf("you missed...\n");
     }
+    Game->playerTurn = !Game->playerTurn;
 }
 void updatePorteAvionLife(int indexInArray,porte_avion_t* pA){
     pA->currentHealth[indexInArray]->healthStatus = 0;

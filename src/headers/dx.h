@@ -16,4 +16,5 @@ void drawPlayerBoats(player_boats_t* pP);
 void drawBotsBoats(bots_boats_t* pB);
 
 void drawBoatHits();
+int drawMenu();
 #endif //PROJET_DX_H

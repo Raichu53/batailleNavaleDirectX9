@@ -207,12 +207,33 @@ void drawScene()
 {
     drawGrid();
     drawPlayerBoats(Game->pPlayer_boats);
-    if(GetAsyncKeyState(0x56)){
+    if(GetAsyncKeyState(0x56)){//v
         //version finale mettre drawBotsBoats dedans
+        //drawBotsBoats(Game->pBots_boats);
     }
-    drawBotsBoats(Game->pBots_boats);
+    drawBotsBoats(Game->pBots_boats);//remove in final version
     drawBoatHits();
+    if(GetAsyncKeyState(VK_ESCAPE) && Game->toggleMenu == 0){
+        Game->toggleMenu = 1;
+    }
+    if(Game->toggleMenu){
+        if(drawMenu() == 0){
+            Game->toggleMenu = 0;
+        }
+    }
 }
+int drawMenu(){
+
+    //il faut retourner 0 si le bouton resume est pressed pour enlever le menu
+
+    RECT r= {0,0,100,50};
+    d3ddev->lpVtbl->ColorFill(d3ddev,NULL,&r, D3DCOLOR_ARGB(255,255,255,255));
+    if(GetAsyncKeyState(0x41)){//faire un bouton "resume" et check si il est pressed
+        return 0;
+    }
+    return 1;
+}
+
 void drawPlayerBoats(player_boats_t* pP)
 {
     {

@@ -172,7 +172,6 @@ int moveBoat(int index,int bForward,
                             buffercase = getCasePtrWithId(1, pPorteAvion->pC->id + 15);
                             buffercase->isOccupied = 0;
                         }
-
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
@@ -238,6 +237,7 @@ int moveBoat(int index,int bForward,
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
+
                 } else {//on a appuyé sur q
                     //printf("on avance\n");
                     bufferint = pPorteAvion->currentHealth[6]->id;
@@ -267,6 +267,7 @@ int moveBoat(int index,int bForward,
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
+
                 }
             }
             break;
@@ -302,6 +303,7 @@ int moveBoat(int index,int bForward,
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
+
                 } else {
                     //printf("on avance\n");
                     bufferint = pCroiseurs->pC->id + 15;
@@ -331,6 +333,7 @@ int moveBoat(int index,int bForward,
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
+
                 }
             }
             else {
@@ -364,6 +367,7 @@ int moveBoat(int index,int bForward,
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
+
                 } else {
                     bufferint = pCroiseurs->currentHealth[4]->id;
                     if ((bufferint % 15) != 0) {
@@ -392,6 +396,7 @@ int moveBoat(int index,int bForward,
                     } else {
                         printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
+
                 }
             }
             break;
@@ -544,6 +549,7 @@ int moveBoat(int index,int bForward,
                         printf(" to %d\n", pSousMarins->pC->id);
                         buffercase = getCasePtrWithId(1, pSousMarins->currentHealth->id - 1);
                         buffercase->isOccupied = 0;
+                        buffercase->healthStatus = 1;
                     }
                 } else {
                     printf("on ne peut pas aller ici, raison: bord de la map...\n");
@@ -557,17 +563,21 @@ int moveBoat(int index,int bForward,
                         printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
                     } else {
                         //on peut bouger
-
-                        pSousMarins->currentHealth = getCasePtrWithId(1,
-                                                                         (pSousMarins->currentHealth->id -
-                                                                          1));
+                        if(pSousMarins->currentHealth->healthStatus == 0){
+                            hit = 0;
+                        }else{
+                            hit = 1;
+                        }
+                        pSousMarins->currentHealth = getCasePtrWithId(1,(pSousMarins->currentHealth->id -1));
                         pSousMarins->currentHealth->isOccupied = 1;
+                        pSousMarins->currentHealth->healthStatus = hit;
 
                         printf("front du boat moved from %d", pSousMarins->pC->id);
                         pSousMarins->pC = pSousMarins->currentHealth;
                         printf(" to %d\n", pSousMarins->pC->id);
                         buffercase = getCasePtrWithId(1, pSousMarins->pC->id + 1);
                         buffercase->isOccupied = 0;
+                        buffercase->healthStatus = 1;
                     }
                 } else {
                     printf("on ne peut pas aller ici, raison: bord de la map...\n");
@@ -578,6 +588,7 @@ int moveBoat(int index,int bForward,
             break;
 
     }
+    Game->playerTurn = !Game->playerTurn;
 }
 ///
 /// \param side = 1 pour le player 0 pour le bot
@@ -643,30 +654,35 @@ void *findBoatPtrWithCase(int side, Case_t *case_ptr)
 /// \param windowPos
 /// \return
 int cursorIsInWindow(int side, LPPOINT cursorPos, vec2_t windowPos) {
-    if (side == -1) {
-        if ((cursorPos->x > windowPos.x) && (cursorPos->x < (windowPos.x + WINDOW_WIDTH))) {
-            if ((cursorPos->y > (windowPos.y + 32)) &&
-                (cursorPos->y < (windowPos.y + WINDOW_HEIGHT + 25))) { //32 is the window bar height
-                return 1;
+    if(GetActiveWindow() == Game->window){
+        if (side == -1) {
+            if ((cursorPos->x > windowPos.x) && (cursorPos->x < (windowPos.x + WINDOW_WIDTH))) {
+                if ((cursorPos->y > (windowPos.y + 32)) &&
+                    (cursorPos->y < (windowPos.y + WINDOW_HEIGHT + 25))) { //32 is the window bar height
+                    return 1;
+                }
             }
-        }
-        return 0;
-    } else if (side == 0) {
-        if ((cursorPos->x > (windowPos.x + (WINDOW_WIDTH / 2))) && (cursorPos->x < (windowPos.x + WINDOW_WIDTH))) {
-            if ((cursorPos->y > (windowPos.y + 32)) && (cursorPos->y < (windowPos.y + WINDOW_HEIGHT + 25))) {
-                return 1;
+            return 0;
+        } else if (side == 0) {
+            if ((cursorPos->x > (windowPos.x + (WINDOW_WIDTH / 2))) && (cursorPos->x < (windowPos.x + WINDOW_WIDTH))) {
+                if ((cursorPos->y > (windowPos.y + 32)) && (cursorPos->y < (windowPos.y + WINDOW_HEIGHT + 25))) {
+                    return 1;
+                }
             }
-        }
-        return 0;
-    } else if (side == 1) {
-        if ((cursorPos->x > windowPos.x) && (cursorPos->x < (windowPos.x + (WINDOW_WIDTH / 2)))) {
-            if ((cursorPos->y > (windowPos.y + 32)) && (cursorPos->y < (windowPos.y + WINDOW_HEIGHT + 25))) {
-                return 1;
+            return 0;
+        } else if (side == 1) {
+            if ((cursorPos->x > windowPos.x) && (cursorPos->x < (windowPos.x + (WINDOW_WIDTH / 2)))) {
+                if ((cursorPos->y > (windowPos.y + 32)) && (cursorPos->y < (windowPos.y + WINDOW_HEIGHT + 25))) {
+                    return 1;
+                }
             }
+            return 0;
+        } else {
+            MessageBoxA(NULL, "fct : cursorIsInWindow failed", NULL, 0);
+            return 0;
         }
-        return 0;
-    } else {
-        MessageBoxA(NULL, "fct : cursorIsInWindow failed", NULL, 0);
+    }
+    else{
         return 0;
     }
 }

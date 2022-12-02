@@ -62,6 +62,8 @@ Game_t* game_new(HWND window)
         pGame->index = 0;
         pGame->cursorPos = malloc(sizeof(LPPOINT));
         pGame->pClickedCase = NULL;
+        pGame->toggleMenu = 0;
+        pGame->playerTurn = 1;
         return pGame;
     }else{
         MessageBoxA(NULL,"Game* is NULL",NULL,0);
