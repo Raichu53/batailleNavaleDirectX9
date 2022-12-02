@@ -3,6 +3,8 @@
 //
 #include "../headers/includes.h"
 
+IDirect3D9* d3d = NULL;
+IDirect3DDevice9* d3ddev = NULL;
 
 #pragma region functions/structs defs
 void drawScene();
@@ -209,6 +211,7 @@ void drawScene()
         //version finale mettre drawBotsBoats dedans
     }
     drawBotsBoats(Game->pBots_boats);
+    drawBoatHits();
 }
 void drawPlayerBoats(player_boats_t* pP)
 {
@@ -371,3 +374,22 @@ D3DXVECTOR2 getWindowDimension()
     }
     return (D3DXVECTOR2){width,height};
 }
+void drawBoatHits(){
+    //player
+    for(int i = 0; i < GAME_DIMENSION;i++){
+        for(int j = 0;j < GAME_DIMENSION;j++){
+            if(Game->playerPlayground[i][j]->healthStatus == 0 && Game->playerPlayground[i][j]->isOccupied){
+                Game->playerPlayground[i][j]->fireBall->draw(Game->playerPlayground[i][j]->fireBall);
+            }
+        }
+    }
+    //bot
+    for(int k = 0;k<GAME_DIMENSION;k++){
+        for(int l = 0;l < GAME_DIMENSION;l++){
+            if(Game->botPlayground[k][l]->healthStatus == 0 && Game->botPlayground[k][l]->isOccupied){
+                Game->botPlayground[k][l]->fireBall->draw(Game->botPlayground[k][l]->fireBall);
+            }
+        }
+    }
+}
+

@@ -39,6 +39,8 @@ typedef struct Case{
     vec2_t posInGrid;
     int isOccupied;
     int healthStatus;
+
+    GameSprite_t* fireBall;
 }Case_t;
 typedef struct sous_marin{
     int len;
@@ -117,9 +119,11 @@ typedef struct Game{
     croiseur_t* croiseurPtr;
     porte_avion_t* porteAvionPtr;
     Case_t* pClickedCase;
+
+    GameSprite_t* fireballBuffer; //optimization
 }Game_t;
 
-Case_t* case_new(int rowLen,int collumnlen,int bBot);
+Case_t* case_new(GameSprite_t* fireballTex,int rowLen,int collumnlen,int bBot);
 Game_t* game_new(HWND window);
 bots_boats_t* bots_boats_new();
 player_boats_t* player_boats_new();

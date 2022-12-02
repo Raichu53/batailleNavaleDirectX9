@@ -24,7 +24,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 extern Game_t* Game;
-extern IDirect3D9* d3d;
-extern IDirect3DDevice9* d3ddev;
+
 
 #endif //PROJET_INCLUDES_H

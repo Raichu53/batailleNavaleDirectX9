@@ -1,0 +1,2 @@
+check si lorsque on bouge un bateau les impacts vont avec (normalement bon) mais surtout si les cases d'apres sont pas
+affecté (possible reset a 0 de healthStatus dans ce cas ?)

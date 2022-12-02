@@ -31,16 +31,18 @@ Game_t* game_new(HWND window)
     if(pGame != NULL){
 
         pGame->window = window;
+        pGame->fireballBuffer = GameSprite_new();
+        initTex(pGame->fireballBuffer,"../img/explosion.png",20,20);
         //bot side
         for(int i = 0; i < GAME_DIMENSION;i++){
             for(int j = 0; j < GAME_DIMENSION;j++){
-                pGame->botPlayground[i][j] = case_new(i,j,1);
+                pGame->botPlayground[i][j] = case_new(pGame->fireballBuffer,i,j,1);
             }
         }
         //player side
         for(int k = 0; k < GAME_DIMENSION;k++){
             for(int l = 0; l < GAME_DIMENSION;l++){
-                pGame->playerPlayground[k][l] = case_new(k,l,0);
+                pGame->playerPlayground[k][l] = case_new(pGame->fireballBuffer,k,l,0);
             }
         }
         pGame->pBots_boats = NULL;
@@ -71,12 +73,13 @@ Game_t* game_new(HWND window)
 /// \param collumnIndex sur quelle collone on est
 /// \param bBot si ce param est true on rajoute 600px lors de l'attribution du x du vec2 attribut de Case_t
 /// \return un ptr vers une Case_t
-Case_t* case_new(int rowIndex,int collumnIndex,int bBot)
+Case_t* case_new(GameSprite_t* fireballTex,int rowIndex,int collumnIndex,int bBot)
 {
     Case_t* pCase = (Case_t*)(malloc(sizeof(Case_t)));
     if(pCase != NULL){
         pCase->id = ((rowIndex*15) + collumnIndex);
         pCase->isOccupied = 0;
+        pCase->healthStatus = 0;
         if(bBot){
             //on assigne la pos du coin hut gauche en px
             pCase->posInGrid.x = (WINDOW_WIDTH/2) +collumnIndex*((WINDOW_WIDTH/2)/15);
@@ -86,6 +89,10 @@ Case_t* case_new(int rowIndex,int collumnIndex,int bBot)
             pCase->posInGrid.x =  collumnIndex*((WINDOW_WIDTH/2)/15);
             pCase->posInGrid.y = rowIndex*((WINDOW_WIDTH/2)/15);
         }
+        pCase->fireBall = GameSprite_new();
+        pCase->fireBall->sprite = fireballTex->sprite; //on ne peut pas init() 2*225 la meme image pour chaque case sinon load time >20sec
+        pCase->fireBall->tex = fireballTex->tex;
+        pCase->fireBall->setPos(pCase->fireBall,(float)pCase->posInGrid.x+10,(float)pCase->posInGrid.y+10);
         return pCase;
     }else{
         MessageBoxA(NULL,"Case_t* is NULL",NULL,0);

@@ -66,7 +66,8 @@ void playerActions(){
                 }
             }
             else{
-                printf("bot side\n");
+                fire(getCasePtrWithPxCoords(0,(vec2_t){Game->cursorPos->x - Game->windowPos.x,
+                                                       Game->cursorPos->y - Game->windowPos.y - 30}));
             }
         }
     }
@@ -138,7 +139,7 @@ int inputs(Case_t* clicked,int index,porte_avion_t* pPorteAvion,croiseur_t* pCro
 int moveBoat(int index,int bForward,
              porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins) {
     Case_t *buffercase;
-    int bufferint;
+    int bufferint,hit;
     switch (index) {
         case 1:
             if (pPorteAvion->isVertical) {
@@ -153,9 +154,16 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 6; i >= 0; i--) {
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -
-                                                                                     15));
+                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+
+                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -15));
                                 pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                pPorteAvion->currentHealth[i]->healthStatus = hit;
+
                             }
                             printf("front du boat moved from %d", pPorteAvion->pC->id);
                             pPorteAvion->pC = pPorteAvion->currentHealth[0];
@@ -179,9 +187,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 0; i <= 6; i++) {
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +
-                                                                                     15));
+                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +15));
                                 pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                pPorteAvion->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pPorteAvion->pC->id);
                             pPorteAvion->pC = pPorteAvion->currentHealth[0];
@@ -207,9 +220,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 0; i <= 6; i++) {
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +
-                                                                                     1));
+                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +1));
                                 pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                pPorteAvion->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pPorteAvion->pC->id);
                             pPorteAvion->pC = pPorteAvion->currentHealth[0];
@@ -231,9 +249,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 6; i >= 0; i--) {
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -
-                                                                                     1));
+                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -1));
                                 pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                pPorteAvion->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pPorteAvion->pC->id);
                             pPorteAvion->pC = pPorteAvion->currentHealth[0];
@@ -260,9 +283,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 4; i >= 0; i--) {
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id -
-                                                                                    15));
+                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id -15));
                                 pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                pCroiseurs->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pCroiseurs->pC->id);
                             pCroiseurs->pC = pCroiseurs->currentHealth[0];
@@ -285,9 +313,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 0; i <= 4; i++) {
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id +
-                                                                                    15));
+                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id +15));
                                 pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                pCroiseurs->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pCroiseurs->pC->id);
                             pCroiseurs->pC = pCroiseurs->currentHealth[0];
@@ -313,10 +346,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 0; i <= 4; i++) {
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1,
-                                                                                (pCroiseurs->currentHealth[i]->id +
-                                                                                 1));
+                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1,(pCroiseurs->currentHealth[i]->id +1));
                                 pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                pCroiseurs->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pCroiseurs->pC->id);
                             pCroiseurs->pC = pCroiseurs->currentHealth[0];
@@ -337,10 +374,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 4; i >= 0; i--) {
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1,
-                                                                                (pCroiseurs->currentHealth[i]->id -
-                                                                                 1));
+                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1,(pCroiseurs->currentHealth[i]->id -1));
                                 pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                pCroiseurs->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pCroiseurs->pC->id);
                             pCroiseurs->pC = pCroiseurs->currentHealth[0];
@@ -367,9 +408,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 2; i >= 0; i--) {
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id -
-                                                                                    15));
+                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id -15));
                                 pDestroyers->currentHealth[i]->isOccupied = 1;
+                                pDestroyers->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pDestroyers->pC->id);
                             pDestroyers->pC = pDestroyers->currentHealth[0];
@@ -392,9 +438,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 0; i <= 2; i++) {
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id +
-                                                                                    15));
+                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id +15));
                                 pDestroyers->currentHealth[i]->isOccupied = 1;
+                                pDestroyers->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pDestroyers->pC->id);
                             pDestroyers->pC = pDestroyers->currentHealth[0];
@@ -419,10 +470,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 0; i <= 2; i++) {
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1,
-                                                                                (pDestroyers->currentHealth[i]->id +
-                                                                                 1));
+                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pDestroyers->currentHealth[i] = getCasePtrWithId(1,(pDestroyers->currentHealth[i]->id +1));
                                 pDestroyers->currentHealth[i]->isOccupied = 1;
+                                pDestroyers->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pDestroyers->pC->id);
                             pDestroyers->pC = pDestroyers->currentHealth[0];
@@ -443,10 +498,14 @@ int moveBoat(int index,int bForward,
                         } else {
                             //on peut bouger
                             for (int i = 2; i >= 0; i--) {
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1,
-                                                                                (pDestroyers->currentHealth[i]->id -
-                                                                                 1));
+                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                    hit = 0;
+                                }else{
+                                    hit = 1;
+                                }
+                                pDestroyers->currentHealth[i] = getCasePtrWithId(1,(pDestroyers->currentHealth[i]->id -1));
                                 pDestroyers->currentHealth[i]->isOccupied = 1;
+                                pDestroyers->currentHealth[i]->healthStatus = hit;
                             }
                             printf("front du boat moved from %d", pDestroyers->pC->id);
                             pDestroyers->pC = pDestroyers->currentHealth[0];
@@ -472,12 +531,14 @@ int moveBoat(int index,int bForward,
                         printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
                     } else {
                         //on peut bouger
-
-                        pSousMarins->currentHealth = getCasePtrWithId(1,
-                                                                         (pSousMarins->currentHealth->id +
-                                                                          1));
+                        if(pSousMarins->currentHealth->healthStatus == 0){
+                            hit = 0;
+                        }else{
+                            hit = 1;
+                        }
+                        pSousMarins->currentHealth = getCasePtrWithId(1,(pSousMarins->currentHealth->id +1));
                         pSousMarins->currentHealth->isOccupied = 1;
-
+                        pSousMarins->currentHealth->healthStatus = hit;
                         printf("front du boat moved from %d", pSousMarins->pC->id);
                         pSousMarins->pC = pSousMarins->currentHealth;
                         printf(" to %d\n", pSousMarins->pC->id);
@@ -550,7 +611,30 @@ void *findBoatPtrWithCase(int side, Case_t *case_ptr)
             }
         }
     } else {
-
+        for (int j = 0; j < 7; j++) {
+            if (Game->pBots_boats->pPorteAvion->currentHealth[j]->id == case_ptr->id) {
+                return Game->pBots_boats->pPorteAvion;
+            }
+        }
+        for (int k = 0; k < 2; k++) {
+            for (int l = 0; l < 5; l++) {
+                if (Game->pBots_boats->pCroiseurs[k]->currentHealth[l]->id == case_ptr->id) {
+                    return Game->pBots_boats->pCroiseurs[k];
+                }
+            }
+        }
+        for (int p = 0; p < 3; p++) {
+            for (int f = 0; f < 3; f++) {
+                if (Game->pBots_boats->pDestroyers[p]->currentHealth[f]->id == case_ptr->id) {
+                    return Game->pBots_boats->pDestroyers[p];
+                }
+            }
+        }
+        for (int y = 0; y < 4; y++) {
+            if (Game->pBots_boats->pSousMarins[y]->currentHealth->id == case_ptr->id) {
+                return Game->pBots_boats->pSousMarins[y];
+            }
+        }
     }
 }
 ///
