@@ -17,4 +17,10 @@ void drawBotsBoats(bots_boats_t* pB);
 
 void drawBoatHits();
 int drawMenu();
+int boatIsNotDead(int isPlayer,Case_t* caseptr);
+void drawBotsDeadBoats(bots_boats_t* pB);
+
+void drawPorteAvion(int mirrored,porte_avion_t* pA);
+void drawCroiseurs(int mirrored,croiseur_t* pCr);
+void drawFlammes(int index,porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins);
 #endif //PROJET_DX_H

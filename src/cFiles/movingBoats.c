@@ -78,6 +78,7 @@ void playerActions(){
 
 int inputs(Case_t* clicked,int index,porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins){
     int currentBoatState;//1 vertical 0 horizontal
+    checkBoatLife();
     switch (index) {
         case 1:
             if(pPorteAvion->isVertical){
@@ -142,7 +143,6 @@ int moveBoat(int index,int bForward,
              porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins) {
     Case_t *buffercase;
     int bufferint,hit;
-    checkBoatLife();
     switch (index) {
         case 1:
             if(pPorteAvion->canMove){
@@ -263,7 +263,7 @@ int moveBoat(int index,int bForward,
                                     pPorteAvion->currentHealth[i]->isOccupied = 1;
                                     pPorteAvion->currentHealth[i]->healthStatus = hit;
                                 }
-                                printf("front du boat moved from %d\n", pPorteAvion->pC->id);
+                                printf("front du boat moved from %d", pPorteAvion->pC->id);
                                 pPorteAvion->pC = pPorteAvion->currentHealth[0];
                                 printf(" to %d\n\n", pPorteAvion->pC->id);
                                 buffercase = getCasePtrWithId(1, pPorteAvion->pC->id + 1);

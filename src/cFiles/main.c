@@ -33,7 +33,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     initD3D(window);
     unsigned long ms,oldms;
-
     while (1)
     {
         //https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea
@@ -55,14 +54,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         mingw_gettimeofday(&Game->tp, NULL);
         ms = Game->tp.tv_sec * 1000 + Game->tp.tv_usec / 1000;
 
+        isGameFinished();
         if (msg.message == WM_QUIT )//la croix
             break;
 
 
         Sleep(10);
     }
-    cleanD3D();
 
+    cleanEverything();
     fclose(f);
     FreeConsole();
 

@@ -64,6 +64,7 @@ Game_t* game_new(HWND window)
         pGame->pClickedCase = NULL;
         pGame->toggleMenu = 0;
         pGame->playerTurn = 1;
+
         return pGame;
     }else{
         MessageBoxA(NULL,"Game* is NULL",NULL,0);
@@ -152,6 +153,13 @@ porte_avion_t* porteAvion_new(){
 
     pPorteAvion->len = 7;
     pPorteAvion->canMove =1;
+
+    pPorteAvion->flammes = GameSprite_new();
+    pPorteAvion->flammes->init(pPorteAvion->flammes,"../img/flammes.png",(40*7)-10,35);
+    pPorteAvion->flammes->color = D3DCOLOR_ARGB(100,255,255,255);
+    pPorteAvion->flammesRight = GameSprite_new();
+    pPorteAvion->flammesRight->init(pPorteAvion->flammesRight,"../img/flammesRight.png",35,(40*7)-10);
+    pPorteAvion->flammesRight->color = D3DCOLOR_ARGB(100,255,255,255);
     return pPorteAvion;
 }
 /// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
@@ -172,6 +180,13 @@ croiseur_t* croiseur_new(){
     initTex(pCroiseur->pCroiseurTexMirrored,"../img/croiseurMirrored.png",(40*5)-10,35);
     pCroiseur->len = 5;
     pCroiseur->canMove =1;
+
+    pCroiseur->flammes = GameSprite_new();
+    pCroiseur->flammes->init(pCroiseur->flammes,"../img/flammes.png",(40*5)-10,35);
+    pCroiseur->flammes->color = D3DCOLOR_ARGB(100,255,255,255);
+    pCroiseur->flammesRight = GameSprite_new();
+    pCroiseur->flammesRight->init(pCroiseur->flammesRight,"../img/flammesRight.png",35,(40*5)-10);
+    pCroiseur->flammesRight->color = D3DCOLOR_ARGB(100,255,255,255);
     return pCroiseur;
 }
 /// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
@@ -192,6 +207,14 @@ destroyer_t* destroyer_new(){
     initTex(pDestroyer->pDestroyerTexMirrored,"../img/destroyerMirrored.png",(40*3)-10,35);
     pDestroyer->len = 3;
     pDestroyer->canMove =1;
+
+    pDestroyer->flammes = GameSprite_new();
+    pDestroyer->flammes->init(pDestroyer->flammes,"../img/flammes.png",(40*3)-10,35);
+    pDestroyer->flammes->color = D3DCOLOR_ARGB(100,255,255,255);
+    pDestroyer->flammesRight = GameSprite_new();
+    pDestroyer->flammesRight->init(pDestroyer->flammesRight,"../img/flammesRight.png",35,(40*3)-10);
+    pDestroyer->flammesRight->color = D3DCOLOR_ARGB(100,255,255,255);
+
     return pDestroyer;
 }
 /// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
@@ -206,6 +229,9 @@ sous_marin_t* sousMarin_new(){
 
     pSousMarin->len = 1;
     pSousMarin->canMove =1;
+    pSousMarin->flammes = GameSprite_new();
+    pSousMarin->flammes->init(pSousMarin->flammes,"../img/flammes.png",35,35);
+    pSousMarin->flammes->color = D3DCOLOR_ARGB(100,255,255,255);
     return pSousMarin;
 }
 #pragma endregion
@@ -220,4 +246,12 @@ void initTex(GameSprite_t* pG,const char* str,int initSizeW,int initSizeH){
         MessageBoxA(NULL,"creation du ptr GameSprite failed",NULL,0);
         exit(1);
     }
+}
+int isGameFinished(){
+    //si tout les bateau d'un coté sont a 0
+}
+void cleanEverything()
+{
+    free(Game);
+    cleanD3D();
 }

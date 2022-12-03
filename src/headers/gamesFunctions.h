@@ -48,6 +48,8 @@ typedef struct sous_marin{
     //il faut placer les images dans le meme dossier que l'exe
     GameSprite_t* pSousMarinTex;
     GameSprite_t* pSousMarinTexMirrored;
+
+    GameSprite_t* flammes;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -60,6 +62,9 @@ typedef struct destroyer{
     GameSprite_t* pDestroyerTex90right;
     GameSprite_t* pDestroyerTexMirrored;
     GameSprite_t* pDestroyerTex90rightMirrored;
+
+    GameSprite_t* flammes;
+    GameSprite_t* flammesRight;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -72,6 +77,9 @@ typedef struct croiseur{
     GameSprite_t* pCroiseurTex90right;
     GameSprite_t* pCroiseurTexMirrored;
     GameSprite_t* pCroiseurTex90rightMirrored;
+
+    GameSprite_t* flammes;
+    GameSprite_t* flammesRight;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -84,6 +92,9 @@ typedef struct porte_avion{
     GameSprite_t* pPorteAvionTex90right;
     GameSprite_t* pPorteAvionTexMirrored;
     GameSprite_t* pPorteAvionTex90rightMirrored;
+
+    GameSprite_t* flammes;
+    GameSprite_t* flammesRight;
     int caseId;
     int isVertical;
     Case_t* pC;
@@ -134,4 +145,6 @@ destroyer_t* destroyer_new();
 sous_marin_t* sousMarin_new();
 
 void initTex(GameSprite_t* pG,const char* str,int initSizeW,int initSizeH);
+void cleanEverything();
+int isGameFinished();
 #endif //PROJET_GAMESFUNCTIONS_H

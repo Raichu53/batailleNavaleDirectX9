@@ -97,8 +97,8 @@ void updateDestroyerLife(int indexInArray,destroyer_t* pD){
 }
 void updateSousMarinLife(int indexInArray,sous_marin_t* pS){
     pS->currentHealth->healthStatus = 0;
-
     pS->canMove = 0;
+    pS->currentHealth->isOccupied = 0;
 }
 int findIndexWithBox(Case_t* caseptr,int index,
                      porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins){
@@ -138,7 +138,7 @@ int findIndexWithBox(Case_t* caseptr,int index,
 void checkBoatLife(){
     //player
     porte_avion_t* pA;
-    croiseur_t* pC;
+    croiseur_t* pCr;
     destroyer_t* pD;
 
     int count = 0;
@@ -149,19 +149,31 @@ void checkBoatLife(){
         }
     }
     if(count == pA->len){//boat is dead
+        if(pA->canMove == 1){
+            //on clean la caisse
+            for(int p = 0; p < pA->len;p++) {
+                pA->currentHealth[p]->isOccupied = 0;
+            }
+        }
         pA->canMove = 0;
     }
 
     for(int j = 0; j < 2;j++){
         count = 0;
-        pC = Game->pPlayer_boats->pCroiseurs[j];
-        for(int k = 0; k < pC->len;k++){
-            if(pC->currentHealth[k]->healthStatus == 0){
+        pCr = Game->pPlayer_boats->pCroiseurs[j];
+        for(int k = 0; k < pCr->len;k++){
+            if(pCr->currentHealth[k]->healthStatus == 0){
                 count++;
             }
         }
-        if(count == pC->len){
-            pC->canMove = 0;
+        if(count == pCr->len){
+            if(pCr->canMove == 1){
+                //on clean la caisse
+                for(int h = 0; h < pCr->len;h++) {
+                    pCr->currentHealth[h]->isOccupied = 0;
+                }
+            }
+            pCr->canMove = 0;
         }
     }
 
@@ -174,10 +186,17 @@ void checkBoatLife(){
             }
         }
         if(count == pD->len){
+            if(pD->canMove == 1){
+                //on clean la caisse
+                for(int y = 0; y < pA->len;y++) {
+                    pD->currentHealth[y]->isOccupied = 0;
+                }
+            }
             pD->canMove = 0;
         }
     }
     //bot
+    count = 0;
     pA = Game->pBots_boats->pPorteAvion;
     for(int i = 0; i < pA->len;i++){
         if(pA->currentHealth[i]->healthStatus == 0){
@@ -185,19 +204,30 @@ void checkBoatLife(){
         }
     }
     if(count == pA->len){//boat is dead
+        if(pA->canMove == 1){
+            //on clean la caisse
+            for(int p = 0; p < pA->len;p++) {
+                pA->currentHealth[p]->isOccupied = 0;
+            }
+        }
         pA->canMove = 0;
     }
 
     for(int j = 0; j < 2;j++){
         count = 0;
-        pC = Game->pBots_boats->pCroiseurs[j];
-        for(int k = 0; k < pC->len;k++){
-            if(pC->currentHealth[k]->healthStatus == 0){
+        pCr = Game->pBots_boats->pCroiseurs[j];
+        for(int k = 0; k < pCr->len;k++){
+            if(pCr->currentHealth[k]->healthStatus == 0){
                 count++;
             }
         }
-        if(count == pC->len){
-            pC->canMove = 0;
+        if(count == pCr->len){
+            if(pCr->canMove == 1){
+                for(int r = 0; r < pA->len;r++) {
+                    pCr->currentHealth[r]->isOccupied = 0;
+                }
+            }
+            pCr->canMove = 0;
         }
     }
 
@@ -210,6 +240,11 @@ void checkBoatLife(){
             }
         }
         if(count == pD->len){
+            if(pD->canMove == 1){
+                for(int a = 0; a < pA->len;a++) {
+                    pD->currentHealth[a]->isOccupied = 0;
+                }
+            }
             pD->canMove = 0;
         }
     }

@@ -209,9 +209,11 @@ void drawScene()
     drawPlayerBoats(Game->pPlayer_boats);
     if(GetAsyncKeyState(0x56)){//v
         //version finale mettre drawBotsBoats dedans
-        //drawBotsBoats(Game->pBots_boats);
+        drawBotsBoats(Game->pBots_boats);
+    }else{
+        drawBotsDeadBoats(Game->pBots_boats);
     }
-    drawBotsBoats(Game->pBots_boats);//remove in final version
+
     drawBoatHits();
     if(GetAsyncKeyState(VK_ESCAPE) && Game->toggleMenu == 0){
         Game->toggleMenu = 1;
@@ -219,6 +221,156 @@ void drawScene()
     if(Game->toggleMenu){
         if(drawMenu() == 0){
             Game->toggleMenu = 0;
+        }
+    }
+}
+void drawPorteAvion(int mirrored,porte_avion_t* pA){
+    if(mirrored){
+        if (pA->isVertical) {
+            pA->pPorteAvionTex90rightMirrored->setPos(pA->pPorteAvionTex90rightMirrored,
+                                                                   pA->pC->posInGrid.x + 5,
+                                                                   pA->pC->posInGrid.y - (40 * 6) + 5);
+            pA->pPorteAvionTex90rightMirrored->draw(pA->pPorteAvionTex90rightMirrored);
+        } else {
+            pA->pPorteAvionTexMirrored->setPos(pA->pPorteAvionTexMirrored,
+                                                            pA->pC->posInGrid.x + 10, //les textures partent de la fin et pas du debut
+                                                            pA->pC->posInGrid.y + 5);
+            pA->pPorteAvionTexMirrored->draw(pA->pPorteAvionTexMirrored);
+        }
+    }else{
+        if(pA->isVertical){
+            pA->pPorteAvionTex90right->setPos(pA->pPorteAvionTex90right,
+                                              pA->pC->posInGrid.x + 5,
+                                              pA->pC->posInGrid.y - (40*6) + 5);
+            pA->pPorteAvionTex90right->draw(pA->pPorteAvionTex90right);
+        }else{
+            pA->pPorteAvionTex->setPos(pA->pPorteAvionTex,
+                                       pA->pC->posInGrid.x - ((40*5)+30), //les textures partent de la fin et pas du debut
+                                       pA->pC->posInGrid.y + 5);
+            pA->pPorteAvionTex->draw(pA->pPorteAvionTex);
+        }
+    }
+}
+void drawCroiseurs(int mirrored,croiseur_t* pCr){
+    if(mirrored){
+        if(pCr->isVertical){
+            pCr->pCroiseurTex90rightMirrored->setPos(pCr->pCroiseurTex90rightMirrored,
+                                                     pCr->pC->posInGrid.x + 5,
+                                                     pCr->pC->posInGrid.y - (40*4) + 5);
+            pCr->pCroiseurTex90rightMirrored->draw(pCr->pCroiseurTex90rightMirrored);
+        }else{
+            pCr->pCroiseurTexMirrored->setPos(pCr->pCroiseurTexMirrored,
+                                              pCr->pC->posInGrid.x + 10, //les textures partent de la fin et pas du debut
+                                              pCr->pC->posInGrid.y + 5);
+            pCr->pCroiseurTexMirrored->draw(pCr->pCroiseurTexMirrored);
+        }
+    }else{
+        if(pCr->isVertical){
+            pCr->pCroiseurTex90right->setPos(pCr->pCroiseurTex90right,
+                                             pCr->pC->posInGrid.x + 5,
+                                             pCr->pC->posInGrid.y - (40*4) + 5);
+            pCr->pCroiseurTex90right->draw(pCr->pCroiseurTex90right);
+        }else{
+            pCr->pCroiseurTex->setPos(pCr->pCroiseurTex,
+                                      pCr->pC->posInGrid.x - ((40*3)+30), //les textures partent de la fin et pas du debut
+                                      pCr->pC->posInGrid.y + 5);
+            pCr->pCroiseurTex->draw(pCr->pCroiseurTex);
+        }
+    }
+}
+void drawDestroyers(int mirrored,destroyer_t* pD){
+    if(mirrored){
+        if(pD->isVertical){
+            pD->pDestroyerTex90rightMirrored->setPos(pD->pDestroyerTex90rightMirrored,
+                                                     pD->pC->posInGrid.x + 5,
+                                                     pD->pC->posInGrid.y - (40*2) + 5);
+            pD->pDestroyerTex90rightMirrored->draw(pD->pDestroyerTex90rightMirrored);
+        }else{
+            pD->pDestroyerTexMirrored->setPos(pD->pDestroyerTexMirrored,
+                                              pD->pC->posInGrid.x + 10, //les textures partent de la fin et pas du debut
+                                              pD->pC->posInGrid.y + 5);
+            pD->pDestroyerTexMirrored->draw(pD->pDestroyerTexMirrored);
+        }
+    }else{
+        if(pD->isVertical){
+            pD->pDestroyerTex90right->setPos(pD->pDestroyerTex90right,
+                                             pD->pC->posInGrid.x + 5,
+                                             pD->pC->posInGrid.y - (40*2) + 5);
+            pD->pDestroyerTex90right->draw(pD->pDestroyerTex90right);
+        }else{
+            pD->pDestroyerTex->setPos(pD->pDestroyerTex,
+                                      pD->pC->posInGrid.x - ((40*1)+30), //les textures partent de la fin et pas du debut
+                                      pD->pC->posInGrid.y + 5);
+            pD->pDestroyerTex->draw(pD->pDestroyerTex);
+        }
+    }
+}
+//index = 1 =>pA , index = 2 =>pC, index = 3 => pD, index = 4 => pS
+void drawFlammes(int index,porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins){
+
+    switch (index) {
+        case 1:
+            if(!pPorteAvion->isVertical){
+                pPorteAvion->flammes->setPos(pPorteAvion->flammes,pPorteAvion->currentHealth[0]->posInGrid.x+20,pPorteAvion->currentHealth[0]->posInGrid.y+2);
+                pPorteAvion->flammes->draw(pPorteAvion->flammes);
+            }else{
+                pPorteAvion->flammesRight->setPos(pPorteAvion->flammesRight,pPorteAvion->currentHealth[6]->posInGrid.x,pPorteAvion->currentHealth[6]->posInGrid.y);
+                pPorteAvion->flammesRight->draw(pPorteAvion->flammesRight);
+            }
+            break;
+        case 2:
+            if(!pCroiseurs->isVertical){
+                pCroiseurs->flammes->setPos(pCroiseurs->flammes,pCroiseurs->currentHealth[0]->posInGrid.x+20,pCroiseurs->currentHealth[0]->posInGrid.y+5);
+                pCroiseurs->flammes->draw(pCroiseurs->flammes);
+            }else{
+                pCroiseurs->flammesRight->setPos(pCroiseurs->flammesRight,pCroiseurs->currentHealth[4]->posInGrid.x,pCroiseurs->currentHealth[4]->posInGrid.y);
+                pCroiseurs->flammesRight->draw(pCroiseurs->flammesRight);
+            }
+            break;
+        case 3:
+            if(!pDestroyers->isVertical){
+                pDestroyers->flammes->setPos(pDestroyers->flammes,pDestroyers->currentHealth[0]->posInGrid.x+12,pDestroyers->currentHealth[0]->posInGrid.y+3);
+                pDestroyers->flammes->draw(pDestroyers->flammes);
+            }else{
+                pDestroyers->flammesRight->setPos(pDestroyers->flammesRight,pDestroyers->currentHealth[2]->posInGrid.x,pDestroyers->currentHealth[2]->posInGrid.y);
+                pDestroyers->flammesRight->draw(pDestroyers->flammesRight);
+            }
+            break;
+        case 4:
+            pSousMarins->flammes->setPos(pSousMarins->flammes,pSousMarins->currentHealth->posInGrid.x+5,pSousMarins->currentHealth->posInGrid.y+1);
+            pSousMarins->flammes->draw(pSousMarins->flammes);
+            break;
+        default:
+            MessageBoxA(NULL,"Error in drawFlammes()",NULL,0);
+            break;
+    }
+}
+void drawBotsDeadBoats(bots_boats_t* pB){
+    if(pB->pPorteAvion->canMove == 0){
+        drawPorteAvion(1,pB->pPorteAvion);
+        drawFlammes(1,pB->pPorteAvion,NULL,NULL,NULL);
+    }
+    for(int i = 0; i < 2;i++){
+        if(pB->pCroiseurs[i]->canMove == 0){
+            drawCroiseurs(1,pB->pCroiseurs[i]);
+            drawFlammes(2,NULL,pB->pCroiseurs[i],NULL,NULL);
+        }
+    }
+    for(int k = 0; k < 3; k++){
+        if(pB->pDestroyers[k]->canMove == 0){
+            drawDestroyers(1,pB->pDestroyers[k]);
+            drawFlammes(3,pB->pPorteAvion,NULL,pB->pDestroyers[k],NULL);
+        }
+    }
+    for(int j = 0; j < 4; j++){
+        if(pB->pSousMarins[j]->canMove == 0){
+
+            pB->pSousMarins[j]->pSousMarinTexMirrored->setPos(pB->pSousMarins[j]->pSousMarinTexMirrored, //multiplier par 6 ou 7 ?
+                                                      pB->pSousMarins[j]->pC->posInGrid.x + 1, //les textures partent de la fin et pas du debut
+                                                      pB->pSousMarins[j]->pC->posInGrid.y + 5);
+            pB->pSousMarins[j]->pSousMarinTexMirrored->draw(pB->pSousMarins[j]->pSousMarinTexMirrored);
+
+            drawFlammes(4,NULL,NULL,NULL,pB->pSousMarins[j]);
         }
     }
 }
@@ -236,110 +388,65 @@ int drawMenu(){
 
 void drawPlayerBoats(player_boats_t* pP)
 {
-    {
-        if(pP->pPorteAvion->isVertical){
-            pP->pPorteAvion->pPorteAvionTex90right->setPos(pP->pPorteAvion->pPorteAvionTex90right,
-                                                           pP->pPorteAvion->pC->posInGrid.x + 5,
-                                                           pP->pPorteAvion->pC->posInGrid.y - (40*6) + 5);
-            pP->pPorteAvion->pPorteAvionTex90right->draw(pP->pPorteAvion->pPorteAvionTex90right);
-        }else{
-            pP->pPorteAvion->pPorteAvionTex->setPos(pP->pPorteAvion->pPorteAvionTex,
-                                                    pP->pPorteAvion->pC->posInGrid.x - ((40*5)+30), //les textures partent de la fin et pas du debut
-                                                    pP->pPorteAvion->pC->posInGrid.y + 5);
-            pP->pPorteAvion->pPorteAvionTex->draw(pP->pPorteAvion->pPorteAvionTex);
+
+    if(pP->pPorteAvion->canMove == 1){ //on affiche pas si un bateau est coulé
+        drawPorteAvion(0,pP->pPorteAvion);
+
+    }
+
+    for(int i = 0;i < 2;i++){
+        if(pP->pCroiseurs[i]->canMove == 1){
+            drawCroiseurs(0,pP->pCroiseurs[i]);
         }
     }
-    {
-        for(int i = 0;i < 2;i++){
-            if(pP->pCroiseurs[i]->isVertical){
-                pP->pCroiseurs[i]->pCroiseurTex90right->setPos(pP->pCroiseurs[i]->pCroiseurTex90right,
-                                                               pP->pCroiseurs[i]->pC->posInGrid.x + 5,
-                                                               pP->pCroiseurs[i]->pC->posInGrid.y - (40*4) + 5);
-                pP->pCroiseurs[i]->pCroiseurTex90right->draw(pP->pCroiseurs[i]->pCroiseurTex90right);
-            }else{
-                pP->pCroiseurs[i]->pCroiseurTex->setPos(pP->pCroiseurs[i]->pCroiseurTex,
-                                                        pP->pCroiseurs[i]->pC->posInGrid.x - ((40*3)+30), //les textures partent de la fin et pas du debut
-                                                        pP->pCroiseurs[i]->pC->posInGrid.y + 5);
-                pP->pCroiseurs[i]->pCroiseurTex->draw(pP->pCroiseurs[i]->pCroiseurTex);
-            }
+
+
+    for(int i = 0;i < 3;i++){
+        if(pP->pDestroyers[i]->canMove == 1){
+            drawDestroyers(0,pP->pDestroyers[i]);
         }
     }
-    {
-        for(int i = 0;i < 3;i++){
-            if(pP->pDestroyers[i]->isVertical){
-                pP->pDestroyers[i]->pDestroyerTex90right->setPos(pP->pDestroyers[i]->pDestroyerTex90right,
-                                                                 pP->pDestroyers[i]->pC->posInGrid.x + 5,
-                                                                 pP->pDestroyers[i]->pC->posInGrid.y - (40*2) + 5);
-                pP->pDestroyers[i]->pDestroyerTex90right->draw(pP->pDestroyers[i]->pDestroyerTex90right);
-            }else{
-                pP->pDestroyers[i]->pDestroyerTex->setPos(pP->pDestroyers[i]->pDestroyerTex,
-                                                        pP->pDestroyers[i]->pC->posInGrid.x - ((40*1)+30), //les textures partent de la fin et pas du debut
-                                                        pP->pDestroyers[i]->pC->posInGrid.y + 5);
-                pP->pDestroyers[i]->pDestroyerTex->draw(pP->pDestroyers[i]->pDestroyerTex);
-            }
-        }
-    }
-    {
-        for(int i = 0;i < 4;i++){
+
+
+    for(int i = 0;i < 4;i++){
+        if(pP->pSousMarins[i]->canMove == 1){
             pP->pSousMarins[i]->pSousMarinTex->setPos(pP->pSousMarins[i]->pSousMarinTex, //multiplier par 6 ou 7 ?
                                                       pP->pSousMarins[i]->pC->posInGrid.x + 1, //les textures partent de la fin et pas du debut
                                                       pP->pSousMarins[i]->pC->posInGrid.y + 5);
             pP->pSousMarins[i]->pSousMarinTex->draw(pP->pSousMarins[i]->pSousMarinTex);
         }
     }
-
 }
 void drawBotsBoats(bots_boats_t* pB){
-    {
-        if (pB->pPorteAvion->isVertical) {
-            pB->pPorteAvion->pPorteAvionTex90rightMirrored->setPos(pB->pPorteAvion->pPorteAvionTex90rightMirrored,
-                                                           pB->pPorteAvion->pC->posInGrid.x + 5,
-                                                           pB->pPorteAvion->pC->posInGrid.y - (40 * 6) + 5);
-            pB->pPorteAvion->pPorteAvionTex90rightMirrored->draw(pB->pPorteAvion->pPorteAvionTex90rightMirrored);
-        } else {
-            pB->pPorteAvion->pPorteAvionTexMirrored->setPos(pB->pPorteAvion->pPorteAvionTexMirrored,
-                                                    pB->pPorteAvion->pC->posInGrid.x + 10, //les textures partent de la fin et pas du debut
-                                                    pB->pPorteAvion->pC->posInGrid.y + 5);
-            pB->pPorteAvion->pPorteAvionTexMirrored->draw(pB->pPorteAvion->pPorteAvionTexMirrored);
-        }
+
+    drawPorteAvion(1,pB->pPorteAvion);
+    if(pB->pPorteAvion->canMove == 0){
+        drawFlammes(1,pB->pPorteAvion,NULL,NULL,NULL);
     }
-    {
-        for(int i = 0;i < 2;i++){
-            if(pB->pCroiseurs[i]->isVertical){
-                pB->pCroiseurs[i]->pCroiseurTex90rightMirrored->setPos(pB->pCroiseurs[i]->pCroiseurTex90rightMirrored,
-                                                               pB->pCroiseurs[i]->pC->posInGrid.x + 5,
-                                                               pB->pCroiseurs[i]->pC->posInGrid.y - (40*4) + 5);
-                pB->pCroiseurs[i]->pCroiseurTex90rightMirrored->draw(pB->pCroiseurs[i]->pCroiseurTex90rightMirrored);
-            }else{
-                pB->pCroiseurs[i]->pCroiseurTexMirrored->setPos(pB->pCroiseurs[i]->pCroiseurTexMirrored,
-                                                        pB->pCroiseurs[i]->pC->posInGrid.x + 10, //les textures partent de la fin et pas du debut
-                                                        pB->pCroiseurs[i]->pC->posInGrid.y + 5);
-                pB->pCroiseurs[i]->pCroiseurTexMirrored->draw(pB->pCroiseurs[i]->pCroiseurTexMirrored);
-            }
+
+    for(int i = 0;i < 2;i++){
+        drawCroiseurs(1,pB->pCroiseurs[i]);
+        if(pB->pCroiseurs[i]->canMove == 0){
+            drawFlammes(2,NULL,pB->pCroiseurs[i],NULL,NULL);
         }
     }
 
-    {
-        for(int i = 0;i < 3;i++){
-            if(pB->pDestroyers[i]->isVertical){
-                pB->pDestroyers[i]->pDestroyerTex90rightMirrored->setPos(pB->pDestroyers[i]->pDestroyerTex90rightMirrored,
-                                                                 pB->pDestroyers[i]->pC->posInGrid.x + 5,
-                                                                 pB->pDestroyers[i]->pC->posInGrid.y - (40*2) + 5);
-                pB->pDestroyers[i]->pDestroyerTex90rightMirrored->draw(pB->pDestroyers[i]->pDestroyerTex90rightMirrored);
-            }else{
-                pB->pDestroyers[i]->pDestroyerTexMirrored->setPos(pB->pDestroyers[i]->pDestroyerTexMirrored,
-                                                          pB->pDestroyers[i]->pC->posInGrid.x + 10, //les textures partent de la fin et pas du debut
-                                                          pB->pDestroyers[i]->pC->posInGrid.y + 5);
-                pB->pDestroyers[i]->pDestroyerTexMirrored->draw(pB->pDestroyers[i]->pDestroyerTexMirrored);
-            }
+
+    for(int i = 0;i < 3;i++){
+        drawDestroyers(1,pB->pDestroyers[i]);
+        if(pB->pDestroyers[i]->canMove == 0){
+            drawFlammes(3,NULL,NULL,pB->pDestroyers[i],NULL);
         }
     }
-    {
-        for(int i = 0;i < 4;i++){
-            pB->pSousMarins[i]->pSousMarinTexMirrored->setPos(pB->pSousMarins[i]->pSousMarinTexMirrored, //multiplier par 6 ou 7 ?
-                                                      pB->pSousMarins[i]->pC->posInGrid.x + 1, //les textures partent de la fin et pas du debut
-                                                      pB->pSousMarins[i]->pC->posInGrid.y + 5);
-            pB->pSousMarins[i]->pSousMarinTexMirrored->draw(pB->pSousMarins[i]->pSousMarinTexMirrored);
+
+
+    for(int i = 0;i < 4;i++){
+        pB->pSousMarins[i]->pSousMarinTexMirrored->setPos(pB->pSousMarins[i]->pSousMarinTexMirrored, //multiplier par 6 ou 7 ?
+                                                  pB->pSousMarins[i]->pC->posInGrid.x + 1, //les textures partent de la fin et pas du debut
+                                                  pB->pSousMarins[i]->pC->posInGrid.y + 5);
+        pB->pSousMarins[i]->pSousMarinTexMirrored->draw(pB->pSousMarins[i]->pSousMarinTexMirrored);
+        if(pB->pSousMarins[i]->canMove == 0){
+            drawFlammes(4,NULL,NULL,NULL,pB->pSousMarins[i]);
         }
     }
 }
@@ -397,20 +504,70 @@ D3DXVECTOR2 getWindowDimension()
 }
 void drawBoatHits(){
     //player
+    Case_t* buffer;
     for(int i = 0; i < GAME_DIMENSION;i++){
         for(int j = 0;j < GAME_DIMENSION;j++){
-            if(Game->playerPlayground[i][j]->healthStatus == 0 && Game->playerPlayground[i][j]->isOccupied){
-                Game->playerPlayground[i][j]->fireBall->draw(Game->playerPlayground[i][j]->fireBall);
+            buffer = Game->playerPlayground[i][j];
+            if(buffer->healthStatus == 0 && buffer->isOccupied && boatIsNotDead(1,buffer)){
+                buffer->fireBall->draw(buffer->fireBall);
             }
         }
     }
     //bot
     for(int k = 0;k<GAME_DIMENSION;k++){
         for(int l = 0;l < GAME_DIMENSION;l++){
-            if(Game->botPlayground[k][l]->healthStatus == 0 && Game->botPlayground[k][l]->isOccupied){
-                Game->botPlayground[k][l]->fireBall->draw(Game->botPlayground[k][l]->fireBall);
+            buffer = Game->botPlayground[k][l];
+            if(buffer->healthStatus == 0 ){
+                if(buffer->isOccupied || boatIsNotDead(0,buffer) == 0){
+                    buffer->fireBall->draw(buffer->fireBall);
+                }
             }
         }
     }
 }
+int boatIsNotDead(int isPlayer,Case_t* caseptr){
+    int boatSize;
+    void* ptr = NULL;
+    porte_avion_t* pA= NULL;
+    croiseur_t* pC= NULL;
+    destroyer_t* pD= NULL;
+    sous_marin_t * pS= NULL;
 
+    if(isPlayer){
+        ptr = findBoatPtrWithCase(isPlayer,caseptr);
+        boatSize = *(int*)ptr;
+        switch (boatSize) {
+            case 1:
+                pS = (sous_marin_t*)ptr;
+                if(pS->canMove == 0){
+                    return 0;
+                }
+                break;
+            case 3:
+                pD = (destroyer_t*)ptr;
+                if(pD->canMove == 0){
+                    return 0;
+                }
+                break;
+            case 5:
+                pC = (croiseur_t*)ptr;
+                if(pC->canMove == 0){
+                    return 0;
+                }
+                break;
+            case 7:
+                pA = (porte_avion_t*)ptr;
+                if(pA->canMove == 0){
+                    return 0;
+                }
+                break;
+            default:
+                MessageBoxA(NULL,"Error in boatIsNotDead()",NULL,0);
+                break;
+        }
+    }else{
+        //not used
+        return 1;
+    }
+    return 1;
+}
