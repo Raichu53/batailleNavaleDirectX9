@@ -43,7 +43,7 @@ typedef struct Case{
     GameSprite_t* fireBall;
 }Case_t;
 typedef struct sous_marin{
-    int len;
+    int len,canMove;
     Case_t* currentHealth; //array en partant de l'avant vers l'arriere du bateau pour savoir ou il y a des hits
     //il faut placer les images dans le meme dossier que l'exe
     GameSprite_t* pSousMarinTex;
@@ -53,7 +53,7 @@ typedef struct sous_marin{
     Case_t* pC;
 }sous_marin_t;
 typedef struct destroyer{
-    int len;
+    int len,canMove;
     Case_t* currentHealth[3];
 
     GameSprite_t* pDestroyerTex;
@@ -65,7 +65,7 @@ typedef struct destroyer{
     Case_t* pC;
 }destroyer_t;
 typedef struct croiseur{
-    int len;
+    int len,canMove;
     Case_t* currentHealth[5];
 
     GameSprite_t* pCroiseurTex;
@@ -77,7 +77,7 @@ typedef struct croiseur{
     Case_t* pC;
 }croiseur_t;
 typedef struct porte_avion{
-    int len;
+    int len,canMove;
     Case_t* currentHealth[7];
 
     GameSprite_t* pPorteAvionTex;
@@ -120,6 +120,8 @@ typedef struct Game{
     Case_t* pClickedCase;
 
     GameSprite_t* fireballBuffer; //optimization
+
+    struct timeval tp;
 }Game_t;
 
 Case_t* case_new(GameSprite_t* fireballTex,int rowLen,int collumnlen,int bBot);

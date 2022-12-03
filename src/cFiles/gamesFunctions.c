@@ -151,7 +151,7 @@ porte_avion_t* porteAvion_new(){
     initTex(pPorteAvion->pPorteAvionTexMirrored,"../img/porteAvionMirrored.png",(40*7)-10,35);
 
     pPorteAvion->len = 7;
-
+    pPorteAvion->canMove =1;
     return pPorteAvion;
 }
 /// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
@@ -171,7 +171,7 @@ croiseur_t* croiseur_new(){
     pCroiseur->pCroiseurTexMirrored = GameSprite_new();
     initTex(pCroiseur->pCroiseurTexMirrored,"../img/croiseurMirrored.png",(40*5)-10,35);
     pCroiseur->len = 5;
-
+    pCroiseur->canMove =1;
     return pCroiseur;
 }
 /// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
@@ -191,7 +191,7 @@ destroyer_t* destroyer_new(){
     pDestroyer->pDestroyerTexMirrored = GameSprite_new();
     initTex(pDestroyer->pDestroyerTexMirrored,"../img/destroyerMirrored.png",(40*3)-10,35);
     pDestroyer->len = 3;
-
+    pDestroyer->canMove =1;
     return pDestroyer;
 }
 /// ce constructeur est utilisé par le constructeur player_boats_new et bots_boats_new pour initaliser les cases des tableaux
@@ -205,7 +205,7 @@ sous_marin_t* sousMarin_new(){
     initTex(pSousMarin->pSousMarinTexMirrored,"../img/sousMarinMirrored.png",38,35);
 
     pSousMarin->len = 1;
-
+    pSousMarin->canMove =1;
     return pSousMarin;
 }
 #pragma endregion

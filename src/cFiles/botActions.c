@@ -6,5 +6,6 @@
 void botAction(){
     int randomInt = rand()%224;
     printf("bot shot at %d\n",randomInt);
-    Game->playerTurn = !Game->playerTurn;
+    fire(1, getCasePtrWithId(1,randomInt));
+
 }

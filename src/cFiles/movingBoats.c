@@ -66,14 +66,16 @@ void playerActions(){
                 }
             }
             else{
-                fire(getCasePtrWithPxCoords(0,(vec2_t){Game->cursorPos->x - Game->windowPos.x,
+                fire(0,getCasePtrWithPxCoords(0,(vec2_t){Game->cursorPos->x - Game->windowPos.x,
                                                        Game->cursorPos->y - Game->windowPos.y - 30}));
+
             }
         }
     }
     inputs(Game->pClickedCase,Game->index,
            Game->porteAvionPtr,Game->croiseurPtr,Game->destroyerPtr,Game->sousMarinPtr);
 }
+
 int inputs(Case_t* clicked,int index,porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins){
     int currentBoatState;//1 vertical 0 horizontal
     switch (index) {
@@ -140,448 +142,470 @@ int moveBoat(int index,int bForward,
              porte_avion_t* pPorteAvion,croiseur_t* pCroiseurs,destroyer_t* pDestroyers,sous_marin_t* pSousMarins) {
     Case_t *buffercase;
     int bufferint,hit;
+    checkBoatLife();
     switch (index) {
         case 1:
-            if (pPorteAvion->isVertical) {
-                if (bForward) {//on a appuyé sur z
-                    //printf("on recule\n");
-                    bufferint = pPorteAvion->currentHealth[6]->id - 15;
-                    if (bufferint >= 0) {
-                        buffercase = getCasePtrWithId(1, (pPorteAvion->currentHealth[6]->id - 15));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 6; i >= 0; i--) {
-                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+            if(pPorteAvion->canMove){
+
+                if (pPorteAvion->isVertical) {
+                    if (bForward) {//on a appuyé sur z
+                        //printf("on recule\n");
+                        bufferint = pPorteAvion->currentHealth[6]->id - 15;
+                        if (bufferint >= 0) {
+                            buffercase = getCasePtrWithId(1, (pPorteAvion->currentHealth[6]->id - 15));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 6; i >= 0; i--) {
+                                    if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+
+                                    pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -15));
+                                    pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                    pPorteAvion->currentHealth[i]->healthStatus = hit;
+
                                 }
-
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -15));
-                                pPorteAvion->currentHealth[i]->isOccupied = 1;
-                                pPorteAvion->currentHealth[i]->healthStatus = hit;
-
+                                printf("front du boat moved from %d", pPorteAvion->pC->id);
+                                pPorteAvion->pC = pPorteAvion->currentHealth[0];
+                                printf(" to %d\n\n", pPorteAvion->pC->id);
+                                //on clean la caisse d'ou on vien de partir
+                                buffercase = getCasePtrWithId(1, pPorteAvion->pC->id + 15);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pPorteAvion->pC->id);
-                            pPorteAvion->pC = pPorteAvion->currentHealth[0];
-                            printf(" to %d\n", pPorteAvion->pC->id);
-                            //on clean la caisse d'ou on vien de partir
-                            buffercase = getCasePtrWithId(1, pPorteAvion->pC->id + 15);
-                            buffercase->isOccupied = 0;
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                    } else {//on a appuyé sur s
+                        //printf("on avance\n");
+                        bufferint = pPorteAvion->pC->id + 15;
+                        if (bufferint <= 224) {
+                            buffercase = getCasePtrWithId(1, (pPorteAvion->pC->id + 15));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 0; i <= 6; i++) {
+                                    if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +15));
+                                    pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                    pPorteAvion->currentHealth[i]->healthStatus = hit;
+                                }
+                                printf("front du boat moved from %d", pPorteAvion->pC->id);
+                                pPorteAvion->pC = pPorteAvion->currentHealth[0];
+                                printf(" to %d\n\n", pPorteAvion->pC->id);
+                                buffercase = getCasePtrWithId(1, pPorteAvion->currentHealth[6]->id - 15);
+                                buffercase->isOccupied = 0;
+                            }
+
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                        }
                     }
-                } else {//on a appuyé sur s
-                    //printf("on avance\n");
-                    bufferint = pPorteAvion->pC->id + 15;
-                    if (bufferint <= 224) {
-                        buffercase = getCasePtrWithId(1, (pPorteAvion->pC->id + 15));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 0; i <= 6; i++) {
-                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+                } else {
+                    int row;
+                    if (bForward) {//on a appuyé sur d
+                        //printf("on avance\n");
+                        bufferint = pPorteAvion->pC->id + 1;
+                        if ((bufferint % 15) != 0) {
+                            buffercase = getCasePtrWithId(1, (pPorteAvion->pC->id + 1));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 0; i <= 6; i++) {
+                                    if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +1));
+                                    pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                    pPorteAvion->currentHealth[i]->healthStatus = hit;
                                 }
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +15));
-                                pPorteAvion->currentHealth[i]->isOccupied = 1;
-                                pPorteAvion->currentHealth[i]->healthStatus = hit;
+                                printf("front du boat moved from %d", pPorteAvion->pC->id);
+                                pPorteAvion->pC = pPorteAvion->currentHealth[0];
+                                printf(" to %d\n\n", pPorteAvion->pC->id);
+                                buffercase = getCasePtrWithId(1, pPorteAvion->currentHealth[6]->id - 1);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pPorteAvion->pC->id);
-                            pPorteAvion->pC = pPorteAvion->currentHealth[0];
-                            printf(" to %d\n", pPorteAvion->pC->id);
-                            buffercase = getCasePtrWithId(1, pPorteAvion->currentHealth[6]->id - 15);
-                            buffercase->isOccupied = 0;
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
 
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                    } else {//on a appuyé sur q
+                        //printf("on avance\n");
+                        bufferint = pPorteAvion->currentHealth[6]->id;
+                        if ((bufferint % 15) != 0) {
+                            buffercase = getCasePtrWithId(1, (pPorteAvion->currentHealth[6]->id - 1));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...");
+                            } else {
+                                //on peut bouger
+                                for (int i = 6; i >= 0; i--) {
+                                    if(pPorteAvion->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -1));
+                                    pPorteAvion->currentHealth[i]->isOccupied = 1;
+                                    pPorteAvion->currentHealth[i]->healthStatus = hit;
+                                }
+                                printf("front du boat moved from %d\n", pPorteAvion->pC->id);
+                                pPorteAvion->pC = pPorteAvion->currentHealth[0];
+                                printf(" to %d\n\n", pPorteAvion->pC->id);
+                                buffercase = getCasePtrWithId(1, pPorteAvion->pC->id + 1);
+                                buffercase->isOccupied = 0;
+                            }
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                        }
+
                     }
                 }
-            } else {
-                int row;
-                if (bForward) {//on a appuyé sur d
-                    //printf("on avance\n");
-                    bufferint = pPorteAvion->pC->id + 1;
-                    if ((bufferint % 15) != 0) {
-                        buffercase = getCasePtrWithId(1, (pPorteAvion->pC->id + 1));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 0; i <= 6; i++) {
-                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
-                                }
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id +1));
-                                pPorteAvion->currentHealth[i]->isOccupied = 1;
-                                pPorteAvion->currentHealth[i]->healthStatus = hit;
-                            }
-                            printf("front du boat moved from %d", pPorteAvion->pC->id);
-                            pPorteAvion->pC = pPorteAvion->currentHealth[0];
-                            printf(" to %d\n", pPorteAvion->pC->id);
-                            buffercase = getCasePtrWithId(1, pPorteAvion->currentHealth[6]->id - 1);
-                            buffercase->isOccupied = 0;
-                        }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
-
-                } else {//on a appuyé sur q
-                    //printf("on avance\n");
-                    bufferint = pPorteAvion->currentHealth[6]->id;
-                    if ((bufferint % 15) != 0) {
-                        buffercase = getCasePtrWithId(1, (pPorteAvion->currentHealth[6]->id - 1));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 6; i >= 0; i--) {
-                                if(pPorteAvion->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
-                                }
-                                pPorteAvion->currentHealth[i] = getCasePtrWithId(1, (pPorteAvion->currentHealth[i]->id -1));
-                                pPorteAvion->currentHealth[i]->isOccupied = 1;
-                                pPorteAvion->currentHealth[i]->healthStatus = hit;
-                            }
-                            printf("front du boat moved from %d", pPorteAvion->pC->id);
-                            pPorteAvion->pC = pPorteAvion->currentHealth[0];
-                            printf(" to %d\n", pPorteAvion->pC->id);
-                            buffercase = getCasePtrWithId(1, pPorteAvion->pC->id + 1);
-                            buffercase->isOccupied = 0;
-                        }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
-
-                }
+            }
+            else{
+                printf("Can't move this boat, its dead\n");
             }
             break;
         case 2:
-            if (pCroiseurs->isVertical) {
-                if (bForward) {
-                    //printf("on recule\n");
-                    bufferint = pCroiseurs->currentHealth[4]->id - 15;
-                    if (bufferint >= 0) {
-                        buffercase = getCasePtrWithId(1, (pCroiseurs->currentHealth[4]->id - 15));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 4; i >= 0; i--) {
-                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
-                                }
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id -15));
-                                pCroiseurs->currentHealth[i]->isOccupied = 1;
-                                pCroiseurs->currentHealth[i]->healthStatus = hit;
-                            }
-                            printf("front du boat moved from %d", pCroiseurs->pC->id);
-                            pCroiseurs->pC = pCroiseurs->currentHealth[0];
-                            printf(" to %d\n", pCroiseurs->pC->id);
-                            //on clean la caisse d'ou on vien de partir
-                            buffercase = getCasePtrWithId(1, pCroiseurs->pC->id + 15);
-                            buffercase->isOccupied = 0;
-                        }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
+            if(pCroiseurs->canMove){
 
-                } else {
-                    //printf("on avance\n");
-                    bufferint = pCroiseurs->pC->id + 15;
-                    if (bufferint <= 224) {
-                        buffercase = getCasePtrWithId(1, (pCroiseurs->pC->id + 15));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 0; i <= 4; i++) {
-                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+                if (pCroiseurs->isVertical) {
+                    if (bForward) {
+                        //printf("on recule\n");
+                        bufferint = pCroiseurs->currentHealth[4]->id - 15;
+                        if (bufferint >= 0) {
+                            buffercase = getCasePtrWithId(1, (pCroiseurs->currentHealth[4]->id - 15));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 4; i >= 0; i--) {
+                                    if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id -15));
+                                    pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                    pCroiseurs->currentHealth[i]->healthStatus = hit;
                                 }
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id +15));
-                                pCroiseurs->currentHealth[i]->isOccupied = 1;
-                                pCroiseurs->currentHealth[i]->healthStatus = hit;
+                                printf("front du boat moved from %d", pCroiseurs->pC->id);
+                                pCroiseurs->pC = pCroiseurs->currentHealth[0];
+                                printf(" to %d\n\n", pCroiseurs->pC->id);
+                                //on clean la caisse d'ou on vien de partir
+                                buffercase = getCasePtrWithId(1, pCroiseurs->pC->id + 15);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pCroiseurs->pC->id);
-                            pCroiseurs->pC = pCroiseurs->currentHealth[0];
-                            printf(" to %d\n", pCroiseurs->pC->id);
-                            buffercase = getCasePtrWithId(1, pCroiseurs->currentHealth[4]->id - 15);
-                            buffercase->isOccupied = 0;
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
 
+                    } else {
+                        //printf("on avance\n");
+                        bufferint = pCroiseurs->pC->id + 15;
+                        if (bufferint <= 224) {
+                            buffercase = getCasePtrWithId(1, (pCroiseurs->pC->id + 15));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 0; i <= 4; i++) {
+                                    if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pCroiseurs->currentHealth[i] = getCasePtrWithId(1, (pCroiseurs->currentHealth[i]->id +15));
+                                    pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                    pCroiseurs->currentHealth[i]->healthStatus = hit;
+                                }
+                                printf("front du boat moved from %d", pCroiseurs->pC->id);
+                                pCroiseurs->pC = pCroiseurs->currentHealth[0];
+                                printf(" to %d\n\n", pCroiseurs->pC->id);
+                                buffercase = getCasePtrWithId(1, pCroiseurs->currentHealth[4]->id - 15);
+                                buffercase->isOccupied = 0;
+                            }
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                        }
+
+                    }
                 }
-            }
-            else {
-                int row;
-                if (bForward) {//on a appuyé sur d
-                    //printf("on avance\n");
-                    bufferint = pCroiseurs->pC->id + 1;
-                    if ((bufferint % 15) != 0) {
-                        buffercase = getCasePtrWithId(1, (pCroiseurs->pC->id + 1));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 0; i <= 4; i++) {
-                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+                else {
+                    int row;
+                    if (bForward) {//on a appuyé sur d
+                        //printf("on avance\n");
+                        bufferint = pCroiseurs->pC->id + 1;
+                        if ((bufferint % 15) != 0) {
+                            buffercase = getCasePtrWithId(1, (pCroiseurs->pC->id + 1));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 0; i <= 4; i++) {
+                                    if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pCroiseurs->currentHealth[i] = getCasePtrWithId(1,(pCroiseurs->currentHealth[i]->id +1));
+                                    pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                    pCroiseurs->currentHealth[i]->healthStatus = hit;
                                 }
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1,(pCroiseurs->currentHealth[i]->id +1));
-                                pCroiseurs->currentHealth[i]->isOccupied = 1;
-                                pCroiseurs->currentHealth[i]->healthStatus = hit;
+                                printf("front du boat moved from %d", pCroiseurs->pC->id);
+                                pCroiseurs->pC = pCroiseurs->currentHealth[0];
+                                printf(" to %d\n\n", pCroiseurs->pC->id);
+                                buffercase = getCasePtrWithId(1, pCroiseurs->currentHealth[4]->id - 1);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pCroiseurs->pC->id);
-                            pCroiseurs->pC = pCroiseurs->currentHealth[0];
-                            printf(" to %d\n", pCroiseurs->pC->id);
-                            buffercase = getCasePtrWithId(1, pCroiseurs->currentHealth[4]->id - 1);
-                            buffercase->isOccupied = 0;
-                        }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
-
-                } else {
-                    bufferint = pCroiseurs->currentHealth[4]->id;
-                    if ((bufferint % 15) != 0) {
-                        buffercase = getCasePtrWithId(1, (pCroiseurs->currentHealth[4]->id - 1));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
                         } else {
-                            //on peut bouger
-                            for (int i = 4; i >= 0; i--) {
-                                if(pCroiseurs->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
-                                }
-                                pCroiseurs->currentHealth[i] = getCasePtrWithId(1,(pCroiseurs->currentHealth[i]->id -1));
-                                pCroiseurs->currentHealth[i]->isOccupied = 1;
-                                pCroiseurs->currentHealth[i]->healthStatus = hit;
-                            }
-                            printf("front du boat moved from %d", pCroiseurs->pC->id);
-                            pCroiseurs->pC = pCroiseurs->currentHealth[0];
-                            printf(" to %d\n", pCroiseurs->pC->id);
-                            buffercase = getCasePtrWithId(1, pCroiseurs->pC->id + 1);
-                            buffercase->isOccupied = 0;
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
 
+                    } else {
+                        bufferint = pCroiseurs->currentHealth[4]->id;
+                        if ((bufferint % 15) != 0) {
+                            buffercase = getCasePtrWithId(1, (pCroiseurs->currentHealth[4]->id - 1));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 4; i >= 0; i--) {
+                                    if(pCroiseurs->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pCroiseurs->currentHealth[i] = getCasePtrWithId(1,(pCroiseurs->currentHealth[i]->id -1));
+                                    pCroiseurs->currentHealth[i]->isOccupied = 1;
+                                    pCroiseurs->currentHealth[i]->healthStatus = hit;
+                                }
+                                printf("front du boat moved from %d", pCroiseurs->pC->id);
+                                pCroiseurs->pC = pCroiseurs->currentHealth[0];
+                                printf(" to %d\n\n", pCroiseurs->pC->id);
+                                buffercase = getCasePtrWithId(1, pCroiseurs->pC->id + 1);
+                                buffercase->isOccupied = 0;
+                            }
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                        }
+
+                    }
                 }
+            }else{
+                printf("Can't move this boat, its dead\n");
             }
             break;
         case 3:
-            if (pDestroyers->isVertical) {
-                if (bForward) {
-                    //printf("on recule\n");
-                    bufferint = pDestroyers->currentHealth[2]->id - 15;
-                    if (bufferint >= 0) {
-                        buffercase = getCasePtrWithId(1, (pDestroyers->currentHealth[2]->id - 15));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 2; i >= 0; i--) {
-                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+            if(pDestroyers->canMove){
+                if (pDestroyers->isVertical) {
+                    if (bForward) {
+                        //printf("on recule\n");
+                        bufferint = pDestroyers->currentHealth[2]->id - 15;
+                        if (bufferint >= 0) {
+                            buffercase = getCasePtrWithId(1, (pDestroyers->currentHealth[2]->id - 15));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 2; i >= 0; i--) {
+                                    if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id -15));
+                                    pDestroyers->currentHealth[i]->isOccupied = 1;
+                                    pDestroyers->currentHealth[i]->healthStatus = hit;
                                 }
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id -15));
-                                pDestroyers->currentHealth[i]->isOccupied = 1;
-                                pDestroyers->currentHealth[i]->healthStatus = hit;
+                                printf("front du boat moved from %d", pDestroyers->pC->id);
+                                pDestroyers->pC = pDestroyers->currentHealth[0];
+                                printf(" to %d\n\n", pDestroyers->pC->id);
+                                //on clean la caisse d'ou on vien de partir
+                                buffercase = getCasePtrWithId(1, pDestroyers->pC->id + 15);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pDestroyers->pC->id);
-                            pDestroyers->pC = pDestroyers->currentHealth[0];
-                            printf(" to %d\n", pDestroyers->pC->id);
-                            //on clean la caisse d'ou on vien de partir
-                            buffercase = getCasePtrWithId(1, pDestroyers->pC->id + 15);
-                            buffercase->isOccupied = 0;
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
                     } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                        //printf("on avance\n");
+                        bufferint = pDestroyers->pC->id + 15;
+                        if (bufferint <= 224) {
+                            buffercase = getCasePtrWithId(1, (pDestroyers->pC->id + 15));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 0; i <= 2; i++) {
+                                    if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id +15));
+                                    pDestroyers->currentHealth[i]->isOccupied = 1;
+                                    pDestroyers->currentHealth[i]->healthStatus = hit;
+                                }
+                                printf("front du boat moved from %d", pDestroyers->pC->id);
+                                pDestroyers->pC = pDestroyers->currentHealth[0];
+                                printf(" to %d\n\n", pDestroyers->pC->id);
+                                buffercase = getCasePtrWithId(1, pDestroyers->currentHealth[2]->id - 15);
+                                buffercase->isOccupied = 0;
+                            }
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                        }
                     }
                 } else {
-                    //printf("on avance\n");
-                    bufferint = pDestroyers->pC->id + 15;
-                    if (bufferint <= 224) {
-                        buffercase = getCasePtrWithId(1, (pDestroyers->pC->id + 15));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 0; i <= 2; i++) {
-                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+                    int row;
+                    if (bForward) {//on a appuyé sur d
+                        //printf("on avance\n");
+                        bufferint = pDestroyers->pC->id + 1;
+                        if ((bufferint % 15) != 0) {
+                            buffercase = getCasePtrWithId(1, (pDestroyers->pC->id + 1));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 0; i <= 2; i++) {
+                                    if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pDestroyers->currentHealth[i] = getCasePtrWithId(1,(pDestroyers->currentHealth[i]->id +1));
+                                    pDestroyers->currentHealth[i]->isOccupied = 1;
+                                    pDestroyers->currentHealth[i]->healthStatus = hit;
                                 }
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1, (pDestroyers->currentHealth[i]->id +15));
-                                pDestroyers->currentHealth[i]->isOccupied = 1;
-                                pDestroyers->currentHealth[i]->healthStatus = hit;
+                                printf("front du boat moved from %d", pDestroyers->pC->id);
+                                pDestroyers->pC = pDestroyers->currentHealth[0];
+                                printf(" to %d\n\n", pDestroyers->pC->id);
+                                buffercase = getCasePtrWithId(1, pDestroyers->currentHealth[2]->id - 1);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pDestroyers->pC->id);
-                            pDestroyers->pC = pDestroyers->currentHealth[0];
-                            printf(" to %d\n", pDestroyers->pC->id);
-                            buffercase = getCasePtrWithId(1, pDestroyers->currentHealth[2]->id - 15);
-                            buffercase->isOccupied = 0;
+                        } else {
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
                     } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
-                }
-            } else {
-                int row;
-                if (bForward) {//on a appuyé sur d
-                    //printf("on avance\n");
-                    bufferint = pDestroyers->pC->id + 1;
-                    if ((bufferint % 15) != 0) {
-                        buffercase = getCasePtrWithId(1, (pDestroyers->pC->id + 1));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                        } else {
-                            //on peut bouger
-                            for (int i = 0; i <= 2; i++) {
-                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
+                        bufferint = pDestroyers->currentHealth[2]->id;
+                        if ((bufferint % 15) != 0) {
+                            buffercase = getCasePtrWithId(1, (pDestroyers->currentHealth[2]->id - 1));
+                            if (buffercase->isOccupied) {
+                                //la case est occupé
+                                printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                            } else {
+                                //on peut bouger
+                                for (int i = 2; i >= 0; i--) {
+                                    if(pDestroyers->currentHealth[i]->healthStatus == 0){
+                                        hit = 0;
+                                    }else{
+                                        hit = 1;
+                                    }
+                                    pDestroyers->currentHealth[i] = getCasePtrWithId(1,(pDestroyers->currentHealth[i]->id -1));
+                                    pDestroyers->currentHealth[i]->isOccupied = 1;
+                                    pDestroyers->currentHealth[i]->healthStatus = hit;
                                 }
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1,(pDestroyers->currentHealth[i]->id +1));
-                                pDestroyers->currentHealth[i]->isOccupied = 1;
-                                pDestroyers->currentHealth[i]->healthStatus = hit;
+                                printf("front du boat moved from %d", pDestroyers->pC->id);
+                                pDestroyers->pC = pDestroyers->currentHealth[0];
+                                printf(" to %d\n\n", pDestroyers->pC->id);
+                                buffercase = getCasePtrWithId(1, pDestroyers->pC->id + 1);
+                                buffercase->isOccupied = 0;
                             }
-                            printf("front du boat moved from %d", pDestroyers->pC->id);
-                            pDestroyers->pC = pDestroyers->currentHealth[0];
-                            printf(" to %d\n", pDestroyers->pC->id);
-                            buffercase = getCasePtrWithId(1, pDestroyers->currentHealth[2]->id - 1);
-                            buffercase->isOccupied = 0;
-                        }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                    }
-                } else {
-                    bufferint = pDestroyers->currentHealth[2]->id;
-                    if ((bufferint % 15) != 0) {
-                        buffercase = getCasePtrWithId(1, (pDestroyers->currentHealth[2]->id - 1));
-                        if (buffercase->isOccupied) {
-                            //la case est occupé
-                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
                         } else {
-                            //on peut bouger
-                            for (int i = 2; i >= 0; i--) {
-                                if(pDestroyers->currentHealth[i]->healthStatus == 0){
-                                    hit = 0;
-                                }else{
-                                    hit = 1;
-                                }
-                                pDestroyers->currentHealth[i] = getCasePtrWithId(1,(pDestroyers->currentHealth[i]->id -1));
-                                pDestroyers->currentHealth[i]->isOccupied = 1;
-                                pDestroyers->currentHealth[i]->healthStatus = hit;
-                            }
-                            printf("front du boat moved from %d", pDestroyers->pC->id);
-                            pDestroyers->pC = pDestroyers->currentHealth[0];
-                            printf(" to %d\n", pDestroyers->pC->id);
-                            buffercase = getCasePtrWithId(1, pDestroyers->pC->id + 1);
-                            buffercase->isOccupied = 0;
+                            printf("on ne peut pas aller ici, raison: bord de la map...\n");
                         }
-                    } else {
-                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
                 }
             }
+            else{
+                printf("Can't move this boat, its dead\n");
+            }
         break;
         case 4:
-            if (bForward) {//on a appuyé sur d
-                int row;
-                //printf("on avance\n");
-                bufferint = pSousMarins->pC->id + 1;
-                if ((bufferint % 15) != 0) {
-                    buffercase = getCasePtrWithId(1, (pSousMarins->pC->id + 1));
-                    if (buffercase->isOccupied) {
-                        //la case est occupé
-                        printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                    } else {
-                        //on peut bouger
-                        if(pSousMarins->currentHealth->healthStatus == 0){
-                            hit = 0;
-                        }else{
-                            hit = 1;
-                        }
-                        pSousMarins->currentHealth = getCasePtrWithId(1,(pSousMarins->currentHealth->id +1));
-                        pSousMarins->currentHealth->isOccupied = 1;
-                        pSousMarins->currentHealth->healthStatus = hit;
-                        printf("front du boat moved from %d", pSousMarins->pC->id);
-                        pSousMarins->pC = pSousMarins->currentHealth;
-                        printf(" to %d\n", pSousMarins->pC->id);
-                        buffercase = getCasePtrWithId(1, pSousMarins->currentHealth->id - 1);
-                        buffercase->isOccupied = 0;
-                        buffercase->healthStatus = 1;
-                    }
-                } else {
-                    printf("on ne peut pas aller ici, raison: bord de la map...\n");
-                }
-            } else {
-                bufferint = pSousMarins->currentHealth->id;
-                if ((bufferint % 15) != 0) {
-                    buffercase = getCasePtrWithId(1, (pSousMarins->currentHealth->id - 1));
-                    if (buffercase->isOccupied) {
-                        //la case est occupé
-                        printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
-                    } else {
-                        //on peut bouger
-                        if(pSousMarins->currentHealth->healthStatus == 0){
-                            hit = 0;
-                        }else{
-                            hit = 1;
-                        }
-                        pSousMarins->currentHealth = getCasePtrWithId(1,(pSousMarins->currentHealth->id -1));
-                        pSousMarins->currentHealth->isOccupied = 1;
-                        pSousMarins->currentHealth->healthStatus = hit;
+            if(pSousMarins->canMove){
 
-                        printf("front du boat moved from %d", pSousMarins->pC->id);
-                        pSousMarins->pC = pSousMarins->currentHealth;
-                        printf(" to %d\n", pSousMarins->pC->id);
-                        buffercase = getCasePtrWithId(1, pSousMarins->pC->id + 1);
-                        buffercase->isOccupied = 0;
-                        buffercase->healthStatus = 1;
+                if (bForward) {//on a appuyé sur d
+                    int row;
+                    //printf("on avance\n");
+                    bufferint = pSousMarins->pC->id + 1;
+                    if ((bufferint % 15) != 0) {
+                        buffercase = getCasePtrWithId(1, (pSousMarins->pC->id + 1));
+                        if (buffercase->isOccupied) {
+                            //la case est occupé
+                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                        } else {
+                            //on peut bouger
+                            if(pSousMarins->currentHealth->healthStatus == 0){
+                                hit = 0;
+                            }else{
+                                hit = 1;
+                            }
+                            pSousMarins->currentHealth = getCasePtrWithId(1,(pSousMarins->currentHealth->id +1));
+                            pSousMarins->currentHealth->isOccupied = 1;
+                            pSousMarins->currentHealth->healthStatus = hit;
+                            printf("front du boat moved from %d", pSousMarins->pC->id);
+                            pSousMarins->pC = pSousMarins->currentHealth;
+                            printf(" to %d\n\n", pSousMarins->pC->id);
+                            buffercase = getCasePtrWithId(1, pSousMarins->currentHealth->id - 1);
+                            buffercase->isOccupied = 0;
+                            buffercase->healthStatus = 1;
+                        }
+                    } else {
+                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
                     }
                 } else {
-                    printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                    bufferint = pSousMarins->currentHealth->id;
+                    if ((bufferint % 15) != 0) {
+                        buffercase = getCasePtrWithId(1, (pSousMarins->currentHealth->id - 1));
+                        if (buffercase->isOccupied) {
+                            //la case est occupé
+                            printf("il n'est pas possible d'aller la, raison bateau allié ...\n");
+                        } else {
+                            //on peut bouger
+                            if(pSousMarins->currentHealth->healthStatus == 0){
+                                hit = 0;
+                            }else{
+                                hit = 1;
+                            }
+                            pSousMarins->currentHealth = getCasePtrWithId(1,(pSousMarins->currentHealth->id -1));
+                            pSousMarins->currentHealth->isOccupied = 1;
+                            pSousMarins->currentHealth->healthStatus = hit;
+
+                            printf("front du boat moved from %d", pSousMarins->pC->id);
+                            pSousMarins->pC = pSousMarins->currentHealth;
+                            printf(" to %d\n\n", pSousMarins->pC->id);
+                            buffercase = getCasePtrWithId(1, pSousMarins->pC->id + 1);
+                            buffercase->isOccupied = 0;
+                            buffercase->healthStatus = 1;
+                        }
+                    } else {
+                        printf("on ne peut pas aller ici, raison: bord de la map...\n");
+                    }
                 }
+            }else{
+                printf("Can't move this boat, its dead\n");;
             }
         break;
         default:

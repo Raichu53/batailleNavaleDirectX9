@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include <windows.h>
+#include <time.h>
 
 #include "gamesFunctions.h"
 #include "dx.h"

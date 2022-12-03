@@ -3,7 +3,7 @@
 //
 
 #include "../headers/includes.h"
-#include <time.h>
+
 
 ///pour faire spawn les bateau de maniere random on selectionne une case dans la grille et on check si c'est possible
 ///pour la taille du bateau que l'on veut mettre ET si il n'y a pas deja un bateau

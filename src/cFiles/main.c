@@ -32,6 +32,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     MSG msg;
 
     initD3D(window);
+    unsigned long ms,oldms;
 
     while (1)
     {
@@ -43,14 +44,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
 
         render_frame();
-        if(Game->playerTurn){//on met playerTurn = 0 si il y a eu tir ou mouvement
+        if(Game->playerTurn && ((ms - oldms) > 200)){//on met playerTurn = 0 si il y a eu tir ou mouvement
             playerActions();
-        }else{
+            oldms = ms;
+        }else if(!Game->playerTurn && ((ms - oldms) > 200)){
             botAction();
+            oldms = ms;
         }
+
+        mingw_gettimeofday(&Game->tp, NULL);
+        ms = Game->tp.tv_sec * 1000 + Game->tp.tv_usec / 1000;
 
         if (msg.message == WM_QUIT )//la croix
             break;
+
 
         Sleep(10);
     }
