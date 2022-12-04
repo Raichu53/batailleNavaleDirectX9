@@ -32,18 +32,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     initD3D(window);
     printf("Voulez vous charger la derniere save ? press Y / N\n");
+    /*
     while(1){
         if(GetAsyncKeyState(0x59)){//y
 
+            Game = game_load(window);
+            if(Game->saveFile != NULL){
+                loadBoats(Game->saveFile,Game->pBots_boats,Game->pPlayer_boats);
+            }else{
+                MessageBoxA(NULL,"fichier pas trouvé",NULL,0);
+                exit(1);
+            }
             break;
         }else if(GetAsyncKeyState(0x4E)){//n
-
+            Game = game_new(window);
+            spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
             break;
         }
     }
+
+     */
     Game = game_new(window);
     spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
-    printf("Press escape to show Menu");
+    printf("Press escape to show Menu\n");
     while (1)
     {
         //https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea
@@ -65,6 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         Game->ms = Game->tp.tv_sec * 1000 + Game->tp.tv_usec / 1000;
 
         if(isGameFinished(Game->pPlayer_boats,Game->pBots_boats)){
+            system("cls");
             Game = game_new(window);
             spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
         }

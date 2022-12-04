@@ -1,0 +1,10 @@
+-"reload C make project" clic droit sur cmake-build-debug/ dans l'explorateur sur l'IDE CLion
+Marche de base sur Windows 10
+Si sous Windows 11 et que le jeu plante instant au lancement, il faut:
+	- re-telecharger le sdk directx: https://www.microsoft.com/en-us/download/details.aspx?id=6812
+	- une fois l'installation fini (normalement il y a une erreur a la fin de l'installer microsoft c'est pas grave)
+	allez dans dans programFilesx86/
+	-il doit y avoir un dossier Microsoft DirectX SDK (June 2010)/
+	-renomer ce dossier en MicrosoftDirectXSDKJune2010
+	-le copier coller a la racine du projet ( la ou y il y a le README.md)
+	-reload le cmake projet

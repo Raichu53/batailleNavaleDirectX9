@@ -141,7 +141,7 @@ typedef struct Game{
 
 Case_t* case_new(GameSprite_t* fireballTex,int rowLen,int collumnlen,int bBot);
 Game_t* game_new(HWND window);
-Game_t* game_load();
+Game_t* game_load(HWND window);
 bots_boats_t* bots_boats_new();
 player_boats_t* player_boats_new();
 porte_avion_t* porteAvion_new();

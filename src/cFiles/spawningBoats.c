@@ -4,7 +4,9 @@
 
 #include "../headers/includes.h"
 
+void loadBoats(FILE* fichier,bots_boats_t* pB,player_boats_t* pP){
 
+}
 ///pour faire spawn les bateau de maniere random on selectionne une case dans la grille et on check si c'est possible
 ///pour la taille du bateau que l'on veut mettre ET si il n'y a pas deja un bateau
 ///le ptr pC represente le bout du bateau

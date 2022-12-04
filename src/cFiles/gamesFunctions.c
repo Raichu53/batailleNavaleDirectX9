@@ -78,7 +78,61 @@ Game_t* game_new(HWND window)
         exit(1);
     }
 }
-Game_t* game_load(){
+Game_t* game_load(HWND window){
+    Game_t* pGame = (Game_t*)(malloc(sizeof(Game_t)));
+
+    if(pGame != NULL){
+
+        pGame->window = window;
+        pGame->fireballBuffer = GameSprite_new();
+        initTex(pGame->fireballBuffer,"../img/explosion.png",20,20);
+        //bot side
+        for(int i = 0; i < GAME_DIMENSION;i++){
+            for(int j = 0; j < GAME_DIMENSION;j++){
+                pGame->botPlayground[i][j] = case_new(pGame->fireballBuffer,i,j,1);
+            }
+        }
+        //player side
+        for(int k = 0; k < GAME_DIMENSION;k++){
+            for(int l = 0; l < GAME_DIMENSION;l++){
+                pGame->playerPlayground[k][l] = case_new(pGame->fireballBuffer,k,l,0);
+            }
+        }
+
+        pGame->pBots_boats = NULL;
+        pGame->pBots_boats = bots_boats_new();
+        if(pGame->pBots_boats == NULL){
+            MessageBoxA(NULL,"creation du ptr pBots_boats failed",NULL,0);
+            exit(1);
+        }
+        pGame->pPlayer_boats = NULL;
+        pGame->pPlayer_boats = player_boats_new();
+        if(pGame->pPlayer_boats == NULL){
+            MessageBoxA(NULL,"creation du ptr pPlayer_boats failed",NULL,0);
+            exit(1);
+        }
+
+
+        pGame->waitingInput = 0;
+        pGame->inputHasBeenSend = 0;
+        pGame->index = 0;
+        pGame->cursorPos = malloc(sizeof(LPPOINT));
+        pGame->pClickedCase = NULL;
+        pGame->toggleMenu = 0;
+        pGame->playerTurn = 1;
+        pGame->toggleIntero = 0;
+        for(int i = 0; i < 9;i++){
+            pGame->intero[i] = GameSprite_new();
+            pGame->intero[i]->init(pGame->intero[i],"../img/intero.png",38,38);
+        }
+        pGame->saveFile = fopen("../save.txt","r+");
+        pGame->menusIsTogged = 0;
+        pGame->scoutingRemaining = 4;
+        return pGame;
+    }else{
+        MessageBoxA(NULL,"Game* is NULL",NULL,0);
+        exit(1);
+    }
 
 }
 /// ce constructeur est utilisé dans le constructeur de Game pour initialiser chaque case de la grille
