@@ -180,8 +180,6 @@ void initD3D(HWND window)
                       &d3dpp,
                       &d3ddev);
     //init main struct
-    Game = game_new(window);
-    spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
 }
 void render_frame()
 {
@@ -217,11 +215,138 @@ void drawScene()
     drawBoatHits();
     if(GetAsyncKeyState(VK_ESCAPE) && Game->toggleMenu == 0){
         Game->toggleMenu = 1;
+        system("cls");
     }
     if(Game->toggleMenu){
-        if(drawMenu() == 0){
-            Game->toggleMenu = 0;
+        drawMenu();
+        Game->menusIsTogged = 1;
+    }
+    menuInputs();
+}
+void menuInputs(){
+    //using time to prevent spamming
+    if((Game->ms - Game->lastime) > 1000 && Game->menusIsTogged){
+        if(GetAsyncKeyState(0x53)){//s
+            system("cls");
+            writeInFile(Game->saveFile);
+            printf("current game saved");
+            Game->lastime = Game->ms;
+            Game->menusIsTogged = 0;
         }
+        if(GetAsyncKeyState(0x51)){//q
+            exit(1);
+        }
+        if(GetAsyncKeyState(0x41)){//a
+            system("cls");
+            printf("resuming...\n");
+            Game->lastime = Game->ms;
+            Game->menusIsTogged = 0;
+        }
+        if(GetAsyncKeyState(0x48)){//h
+            system("cls");
+            printf("How to play : \n");
+            printf("------------------------------------------------\n");
+            printf("Mouvements : \n");
+            printf("    Pour bouger un de nos bateau, clicker dessus puis appuyer sur : \n");
+            printf("    z pour reculer ou s pour avancer si le bateau est a la verticale,\n");
+            printf("    q pour reculer ou d pour avancer si le bateau est a l'horizontal\n");
+            printf("Tirer : \n");
+            printf("    Clicker sur une case ennemie\n");
+            printf("Eclairer : \n");
+            printf("    faire un clic droit sur une case ennemie pour afficher des info sur les cases autour\n");
+            printf("------------------------------------------------\n");
+            Game->lastime = Game->ms;
+            Game->menusIsTogged = 0;
+        }
+    }
+}
+void writeInFile(FILE* f){
+    Case_t* buffer;
+    //player boats
+    porte_avion_t* pA = Game->pPlayer_boats->pPorteAvion;
+    fprintf(f,"player boats\n");
+    fprintf(f,"%d%d%d\n",pA->len,pA->isVertical,pA->canMove);//porte avion !!!len,isVertical,canMove
+    fprintf(f,"%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d\n",
+            pA->currentHealth[0]->id,pA->currentHealth[0]->healthStatus,
+            pA->currentHealth[1]->id,pA->currentHealth[1]->healthStatus,
+            pA->currentHealth[2]->id,pA->currentHealth[2]->healthStatus,
+            pA->currentHealth[3]->id,pA->currentHealth[3]->healthStatus,
+            pA->currentHealth[4]->id,pA->currentHealth[4]->healthStatus,
+            pA->currentHealth[5]->id,pA->currentHealth[5]->healthStatus,
+            pA->currentHealth[6]->id,pA->currentHealth[6]->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+    fprintf(f,"!"); // on change de type de bateau
+    croiseur_t* pCr;
+    for(int p = 0; p < 2;p++){//croiseurs
+        pCr = Game->pPlayer_boats->pCroiseurs[p];
+        fprintf(f,"%d%d%d\n",pCr->len,pCr->isVertical,pCr->canMove);//porte avion !!!len,isVertical,canMove
+        fprintf(f,"%d,%d/%d,%d/%d,%d/%d,%d/%d,%d\n",
+                pCr->currentHealth[0]->id,pCr->currentHealth[0]->healthStatus,
+                pCr->currentHealth[1]->id,pCr->currentHealth[1]->healthStatus,
+                pCr->currentHealth[2]->id,pCr->currentHealth[2]->healthStatus,
+                pCr->currentHealth[3]->id,pCr->currentHealth[3]->healthStatus,
+                pCr->currentHealth[4]->id,pCr->currentHealth[4]->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+        fprintf(f,"-");//on change de bateau
+    }
+    fprintf(f,"!");
+    destroyer_t* pD;
+    for(int o = 0; o < 3;o++){//destroyer
+        pD = Game->pPlayer_boats->pDestroyers[o];
+        fprintf(f,"%d%d%d\n",pD->len,pD->isVertical,pD->canMove);//porte avion !!!len,isVertical,canMove
+        fprintf(f,"%d,%d/%d,%d/%d,%d\n",
+                pD->currentHealth[0]->id,pD->currentHealth[0]->healthStatus,
+                pD->currentHealth[1]->id,pD->currentHealth[1]->healthStatus,
+                pD->currentHealth[2]->id,pD->currentHealth[2]->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+        fprintf(f,"-");//on change de bateau
+    }
+    fprintf(f,"!");
+    sous_marin_t* pS;
+    for(int y = 0; y < 4;y++){//sousMarin
+        pS = Game->pPlayer_boats->pSousMarins[y];
+        fprintf(f,"%d%d%d\n",pS->len,pS->isVertical,pS->canMove);//porte avion !!!len,isVertical,canMove
+        fprintf(f,"%d,%d\n",
+                pS->currentHealth->id,pS->currentHealth->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+        fprintf(f,"-");//on change de bateau
+    }
+    fprintf(f,"bot boats\n");
+    pA = Game->pBots_boats->pPorteAvion;
+    fprintf(f,"%d%d%d\n",pA->len,pA->isVertical,pA->canMove);//porte avion !!!len,isVertical,canMove
+    fprintf(f,"%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d/%d,%d\n",
+            pA->currentHealth[0]->id,pA->currentHealth[0]->healthStatus,
+            pA->currentHealth[1]->id,pA->currentHealth[1]->healthStatus,
+            pA->currentHealth[2]->id,pA->currentHealth[2]->healthStatus,
+            pA->currentHealth[3]->id,pA->currentHealth[3]->healthStatus,
+            pA->currentHealth[4]->id,pA->currentHealth[4]->healthStatus,
+            pA->currentHealth[5]->id,pA->currentHealth[5]->healthStatus,
+            pA->currentHealth[6]->id,pA->currentHealth[6]->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+    fprintf(f,"!"); // on change de type de bateau//porte avion
+    for(int t = 0; t < 2;t++){//croiseurs
+        pCr = Game->pBots_boats->pCroiseurs[t];
+        fprintf(f,"%d%d%d\n",pCr->len,pCr->isVertical,pCr->canMove);//porte avion !!!len,isVertical,canMove
+        fprintf(f,"%d,%d/%d,%d/%d,%d/%d,%d/%d,%d\n",
+                pCr->currentHealth[0]->id,pCr->currentHealth[0]->healthStatus,
+                pCr->currentHealth[1]->id,pCr->currentHealth[1]->healthStatus,
+                pCr->currentHealth[2]->id,pCr->currentHealth[2]->healthStatus,
+                pCr->currentHealth[3]->id,pCr->currentHealth[3]->healthStatus,
+                pCr->currentHealth[4]->id,pCr->currentHealth[4]->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+        fprintf(f,"-");//on change de bateau
+    }
+    fprintf(f,"!");
+    for(int x = 0; x < 3;x++){//destroyer
+        pD = Game->pBots_boats->pDestroyers[x];
+        fprintf(f,"%d%d%d\n",pD->len,pD->isVertical,pD->canMove);//porte avion !!!len,isVertical,canMove
+        fprintf(f,"%d,%d/%d,%d/%d,%d\n",
+                pD->currentHealth[0]->id,pD->currentHealth[0]->healthStatus,
+                pD->currentHealth[1]->id,pD->currentHealth[1]->healthStatus,
+                pD->currentHealth[2]->id,pD->currentHealth[2]->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+        fprintf(f,"-");//on change de bateau
+    }
+    fprintf(f,"!");
+    for(int g = 0; g < 4;g++){//sousMarin
+        pS = Game->pBots_boats->pSousMarins[g];
+        fprintf(f,"%d%d%d\n",pS->len,pS->isVertical,pS->canMove);//porte avion !!!len,isVertical,canMove
+        fprintf(f,"%d,%d\n",
+                pS->currentHealth->id,pS->currentHealth->healthStatus);//l'id de la case VIRGULE puis sa vie SLASH on recommence
+        fprintf(f,"-");//on change de bateau
     }
 }
 void drawIntero(){
@@ -386,12 +511,13 @@ void drawBotsDeadBoats(bots_boats_t* pB){
 int drawMenu(){
 
     //il faut retourner 0 si le bouton resume est pressed pour enlever le menu
-
-    RECT r= {0,0,100,50};
-    d3ddev->lpVtbl->ColorFill(d3ddev,NULL,&r, D3DCOLOR_ARGB(255,255,255,255));
-    if(GetAsyncKeyState(0x41)){//faire un bouton "resume" et check si il est pressed
-        return 0;
-    }
+    printf("----------------------MENU----------------------\n");
+    printf("press 'S' to save game\n");
+    printf("press 'Q' to quit game\n");
+    printf("press 'A' to resume\n");
+    printf("press 'H' for help\n");
+    printf("------------------------------------------------\n");
+    Game->toggleMenu = 0;
     return 1;
 }
 

@@ -9,7 +9,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     FILE* f;
     freopen_s(&f, "CONOUT$", "w", stdout);
 
-
     WNDCLASSEX wcx = {};
     ZeroMemory(&wcx,sizeof(WNDCLASSEX));
 
@@ -32,8 +31,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     MSG msg;
 
     initD3D(window);
-    unsigned long ms,oldms,intero;
-    int count;
+    printf("Voulez vous charger la derniere save ? press Y / N\n");
+    while(1){
+        if(GetAsyncKeyState(0x59)){//y
+
+            break;
+        }else if(GetAsyncKeyState(0x4E)){//n
+
+            break;
+        }
+    }
+    Game = game_new(window);
+    spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
+    printf("Press escape to show Menu");
     while (1)
     {
         //https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea
@@ -42,20 +52,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&msg);
             DispatchMessageW(&msg);
         }
-
         render_frame();
-        if(Game->playerTurn && ((ms - oldms) > 200)){//on met playerTurn = 0 si il y a eu tir ou mouvement
+        if(Game->playerTurn && ((Game->ms - Game->oldms) > 200)){//on met playerTurn = 0 si il y a eu tir ou mouvement
             playerActions();
-            oldms = ms;
-        }else if(!Game->playerTurn && ((ms - oldms) > 200)){
+            Game->oldms = Game->ms;
+        }else if(!Game->playerTurn && ((Game->ms - Game->oldms) > 200)){
             botAction();
-            oldms = ms;
+            Game->oldms = Game->ms;
         }
 
         mingw_gettimeofday(&Game->tp, NULL);
-        ms = Game->tp.tv_sec * 1000 + Game->tp.tv_usec / 1000;
+        Game->ms = Game->tp.tv_sec * 1000 + Game->tp.tv_usec / 1000;
 
-        isGameFinished();
+        if(isGameFinished(Game->pPlayer_boats,Game->pBots_boats)){
+            Game = game_new(window);
+            spawnBoats(Game->pBots_boats,Game->pPlayer_boats);
+        }
         if (msg.message == WM_QUIT )//la croix
             break;
 

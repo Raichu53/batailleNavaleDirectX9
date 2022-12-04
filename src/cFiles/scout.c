@@ -33,6 +33,7 @@ void scout(int dest,Case_t* caseCliked){
         tab[8] = getCasePtrWithId(0,(caseCliked->id - 15)-1);
     }
 
+
     for(int i = 0; i < 9;i++){
         if(tab[i] != NULL){
             //printf("case id : %d \n",tab[i]->id);
@@ -48,7 +49,10 @@ void scout(int dest,Case_t* caseCliked){
         }
     }
 
-    printf("\n");
+
     Game->playerTurn = !Game->playerTurn;
     Game->toggleIntero = 1;
+    Game->scoutingRemaining--;
+    printf("il vous reste %d eclairages",Game->scoutingRemaining);
+    printf("\n");
 }

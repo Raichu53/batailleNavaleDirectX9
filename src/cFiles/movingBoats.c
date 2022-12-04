@@ -72,8 +72,12 @@ void playerActions(){
             }
         }else if(GetAsyncKeyState(VK_RBUTTON)){
             if(cursorIsInWindow(0,Game->cursorPos,Game->windowPos)){
-                scout(0, getCasePtrWithPxCoords(0,(vec2_t){Game->cursorPos->x - Game->windowPos.x,
-                                                           Game->cursorPos->y - Game->windowPos.y - 30}));
+                if(Game->scoutingRemaining > 0){
+                    scout(0, getCasePtrWithPxCoords(0,(vec2_t){Game->cursorPos->x - Game->windowPos.x,
+                                                               Game->cursorPos->y - Game->windowPos.y - 30}));
+                }else{
+                    printf("vous avez utilise tout vous eclairages\n");
+                }
             }
         }
     }

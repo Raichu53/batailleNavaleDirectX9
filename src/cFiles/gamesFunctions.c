@@ -69,11 +69,17 @@ Game_t* game_new(HWND window)
             pGame->intero[i] = GameSprite_new();
             pGame->intero[i]->init(pGame->intero[i],"../img/intero.png",38,38);
         }
+        pGame->saveFile = fopen("../save.txt","w+");
+        pGame->menusIsTogged = 0;
+        pGame->scoutingRemaining = 4;
         return pGame;
     }else{
         MessageBoxA(NULL,"Game* is NULL",NULL,0);
         exit(1);
     }
+}
+Game_t* game_load(){
+
 }
 /// ce constructeur est utilisé dans le constructeur de Game pour initialiser chaque case de la grille
 /// \param rowIndex sur quelle ligne on est
@@ -251,11 +257,38 @@ void initTex(GameSprite_t* pG,const char* str,int initSizeW,int initSizeH){
         exit(1);
     }
 }
-int isGameFinished(){
+int isGameFinished(player_boats_t* pP,bots_boats_t* pB){
     //si tout les bateau d'un coté sont a 0
+    if(pP->pPorteAvion->canMove == 0 && pP->pCroiseurs[0]->canMove == 0 && pP->pCroiseurs[1]->canMove == 0 &&
+        pP->pDestroyers[0]->canMove == 0 && pP->pDestroyers[1]->canMove == 0 && pP->pDestroyers[2]->canMove == 0 &&
+        pP->pSousMarins[0]->canMove == 0 && pP->pSousMarins[1]->canMove == 0 && pP->pSousMarins[2]->canMove == 0 && pP->pSousMarins[3]->canMove == 0){
+
+        system("cls");
+        int returnVal = MessageBoxA(NULL,"BOT won ! replay ?",NULL,MB_YESNO | MB_ICONEXCLAMATION);
+        if(returnVal == IDYES){
+            return 1;
+        }else if(returnVal == IDNO){
+            exit(1);
+        }
+
+    }else if(pB->pPorteAvion->canMove == 0 && pB->pCroiseurs[0]->canMove == 0 && pB->pCroiseurs[1]->canMove == 0 &&
+            pB->pDestroyers[0]->canMove == 0 && pB->pDestroyers[1]->canMove == 0 && pB->pDestroyers[2]->canMove == 0 &&
+            pB->pSousMarins[0]->canMove == 0 && pB->pSousMarins[1]->canMove == 0 && pB->pSousMarins[2]->canMove == 0 && pB->pSousMarins[3]->canMove == 0){
+
+        system("cls");
+        int returnVal = MessageBoxA(NULL,"PLAYER won ! replay ?",NULL,MB_YESNO | MB_ICONEXCLAMATION);
+        if(returnVal == IDYES){
+            return 1;
+        }else if(returnVal == IDNO){
+            exit(1);
+        }
+    }
+
+    return 0;
 }
 void cleanEverything()
 {
+    fclose(Game->saveFile);
     free(Game);
     cleanD3D();
 }

@@ -113,7 +113,8 @@ typedef struct player_boats{
 }player_boats_t;
 
 typedef struct Game{
-    int waitingInput,inputHasBeenSend,index,toggleMenu,playerTurn,toggleIntero;
+    int waitingInput,inputHasBeenSend,index,toggleMenu,playerTurn,toggleIntero,menusIsTogged,scoutingRemaining;
+    unsigned long ms,oldms,lastime;
     HWND window;
     vec2_t windowPos;
     LPPOINT cursorPos;
@@ -124,19 +125,23 @@ typedef struct Game{
     bots_boats_t* pBots_boats;
     player_boats_t* pPlayer_boats;
 
+    //buffers
     sous_marin_t* sousMarinPtr;
     destroyer_t* destroyerPtr;
     croiseur_t* croiseurPtr;
     porte_avion_t* porteAvionPtr;
     Case_t* pClickedCase;
-
-    GameSprite_t* fireballBuffer; //optimization
+    //tex optimization
+    GameSprite_t* fireballBuffer;
     GameSprite_t* intero[9];
     struct timeval tp;
+
+    FILE* saveFile;
 }Game_t;
 
 Case_t* case_new(GameSprite_t* fireballTex,int rowLen,int collumnlen,int bBot);
 Game_t* game_new(HWND window);
+Game_t* game_load();
 bots_boats_t* bots_boats_new();
 player_boats_t* player_boats_new();
 porte_avion_t* porteAvion_new();
@@ -146,5 +151,5 @@ sous_marin_t* sousMarin_new();
 
 void initTex(GameSprite_t* pG,const char* str,int initSizeW,int initSizeH);
 void cleanEverything();
-int isGameFinished();
+int isGameFinished(player_boats_t* pP,bots_boats_t* pB);
 #endif //PROJET_GAMESFUNCTIONS_H

@@ -22,7 +22,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
     if(bVertical){
         while(1){
             randomCase = rand()%224;
-            if(randomCase > 105){
+            if(randomCase > 105){ // parce que 7* 15 = 105 donc si il est vertical c'est ok
                 pP->pPorteAvion->caseId = randomCase;
                 //printf("l'id de la case choisi pour le porte avion du player est : %d et il est vertical\n",randomCase);
                 break;
@@ -31,7 +31,7 @@ void spawnBoats(bots_boats_t* pB,player_boats_t* pP){
     }else{
         while(1){
             randomCase = rand()%224;
-            if((randomCase%15) > 6){
+            if((randomCase%15) > 6){ // parce que il doit etre a une distance plus grande que 6 du bord donc on utilise modulo
                 pP->pPorteAvion->caseId = randomCase;
                 //printf("l'id de la case choisi pour le porte avion du player est : %d et il est horizontal\n",randomCase);
                 break;
