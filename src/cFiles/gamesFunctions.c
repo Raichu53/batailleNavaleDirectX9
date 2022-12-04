@@ -64,7 +64,11 @@ Game_t* game_new(HWND window)
         pGame->pClickedCase = NULL;
         pGame->toggleMenu = 0;
         pGame->playerTurn = 1;
-
+        pGame->toggleIntero = 0;
+        for(int i = 0; i < 9;i++){
+            pGame->intero[i] = GameSprite_new();
+            pGame->intero[i]->init(pGame->intero[i],"../img/intero.png",38,38);
+        }
         return pGame;
     }else{
         MessageBoxA(NULL,"Game* is NULL",NULL,0);

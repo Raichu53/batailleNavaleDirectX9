@@ -403,6 +403,9 @@ int isGoingToFit(int isPlayer,int len,int isVertical,int caseId,bots_boats_t* pB
     }
 }
 Case_t* getCasePtrWithId(int isPlayer,int id){
+    if(id < 0 || id > 224){
+        return NULL;
+    }
     for(int i = 0; i < GAME_DIMENSION;i++){
         for(int k = 0; k < GAME_DIMENSION; k++){
             if(isPlayer){

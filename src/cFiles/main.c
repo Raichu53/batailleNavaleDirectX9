@@ -32,7 +32,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     MSG msg;
 
     initD3D(window);
-    unsigned long ms,oldms;
+    unsigned long ms,oldms,intero;
+    int count;
     while (1)
     {
         //https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-peekmessagea

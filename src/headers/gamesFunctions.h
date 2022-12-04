@@ -113,7 +113,7 @@ typedef struct player_boats{
 }player_boats_t;
 
 typedef struct Game{
-    int waitingInput,inputHasBeenSend,index,toggleMenu,playerTurn;
+    int waitingInput,inputHasBeenSend,index,toggleMenu,playerTurn,toggleIntero;
     HWND window;
     vec2_t windowPos;
     LPPOINT cursorPos;
@@ -131,7 +131,7 @@ typedef struct Game{
     Case_t* pClickedCase;
 
     GameSprite_t* fireballBuffer; //optimization
-
+    GameSprite_t* intero[9];
     struct timeval tp;
 }Game_t;
 

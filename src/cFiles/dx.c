@@ -206,6 +206,7 @@ void cleanD3D()
 void drawScene()
 {
     drawGrid();
+    drawIntero();
     drawPlayerBoats(Game->pPlayer_boats);
     if(GetAsyncKeyState(0x56)){//v
         //version finale mettre drawBotsBoats dedans
@@ -213,7 +214,6 @@ void drawScene()
     }else{
         drawBotsDeadBoats(Game->pBots_boats);
     }
-
     drawBoatHits();
     if(GetAsyncKeyState(VK_ESCAPE) && Game->toggleMenu == 0){
         Game->toggleMenu = 1;
@@ -223,6 +223,15 @@ void drawScene()
             Game->toggleMenu = 0;
         }
     }
+}
+void drawIntero(){
+
+    for(int i = 0; i < 9;i++){
+        if(Game->intero[i]->pos.x > 590 && Game->toggleIntero){
+            Game->intero[i]->draw(Game->intero[i]);
+        }
+    }
+
 }
 void drawPorteAvion(int mirrored,porte_avion_t* pA){
     if(mirrored){

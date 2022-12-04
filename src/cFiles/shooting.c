@@ -42,6 +42,7 @@ void fire(int dest,Case_t* clickedCase)
                     break;
             }
             printf("player hit ! \n");
+            Game->toggleIntero = 0;
         }
         else{
             boatptr = findBoatPtrWithCase(1,clickedCase);
